@@ -1,0 +1,127 @@
+/* ============================================
+   MAXI VIAJES - Global Styles
+   Google Fonts + Tailwind imports
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Raleway:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-body text-gray-800 bg-white antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+
+  a {
+    @apply transition-colors duration-200;
+  }
+}
+
+/* ============================================
+   CUSTOM COMPONENT CLASSES
+   ============================================ */
+@layer components {
+  /* Nav link underline animation */
+  .nav-link {
+    @apply relative text-white/90 hover:text-white font-body font-medium text-sm transition-colors duration-200;
+  }
+
+  .nav-link::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-secondary transition-all duration-300;
+  }
+
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+
+  /* Section title underline decoration */
+  .section-title {
+    @apply font-heading text-3xl md:text-4xl font-bold text-dark mb-4;
+  }
+
+  .section-title span {
+    @apply text-secondary;
+  }
+
+  .section-subtitle {
+    @apply font-body text-gray-600 text-lg max-w-2xl mx-auto;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent;
+  }
+
+  /* Card base */
+  .card-base {
+    @apply bg-white rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-300;
+  }
+
+  /* Orange accent line */
+  .accent-line {
+    @apply block w-16 h-1 bg-secondary rounded-full mb-4;
+  }
+
+  /* Decorative geometric shapes */
+  .geo-circle {
+    @apply absolute rounded-full opacity-10;
+  }
+
+  /* Scrollbar personalizado */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-light;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary-light;
+  }
+}
+
+/* ============================================
+   UTILITIES
+   ============================================ */
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0,0,0,0.4);
+  }
+
+  .bg-blur {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .transition-all-300 {
+    transition: all 0.3s ease;
+  }
+}
