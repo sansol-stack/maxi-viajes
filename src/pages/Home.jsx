@@ -55,7 +55,7 @@ export default function Home() {
           <Hero />
           <About />
           <Services />
-          <Destinations />
+          {/* <Destinations /> */}
           {/* <Fleet /> */}
           <PremiumShowcase />
           <CTA />

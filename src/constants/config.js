@@ -29,6 +29,6 @@ export const NAV_LINKS = [
   { label: 'Inicio', href: '#inicio' },
   { label: 'Nosotros', href: '#nosotros' },
   { label: 'Servicios', href: '#servicios' },
-  { label: 'Destinos', href: '#destinos' },
-  { label: 'Flota', href: '#flota' },
+  /* { label: 'Destinos', href: '#destinos' }, */
+  /* { label: 'Flota', href: '#flota' }, */
 ]
