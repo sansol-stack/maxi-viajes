@@ -45,8 +45,8 @@ export default function Header() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
-          ? 'bg-dark shadow-xl py-3'
-          : 'bg-dark/80 backdrop-blur-md py-4'
+        ? 'bg-dark shadow-xl py-3'
+        : 'bg-dark/80 backdrop-blur-md py-4'
         }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -60,18 +60,25 @@ export default function Header() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center 
-                            group-hover:scale-105 transition-transform shadow-orange">
-              <span className="text-white font-heading font-black text-lg leading-none">M</span>
-            </div>
-            <div>
-              <span className="font-heading font-bold text-white text-lg leading-none block">
-                Maxi Viajes
-              </span>
-              <span className="font-body text-white/50 text-xs">
-                Traslados Premium
-              </span>
-            </div>
+            {/* Logo Anterior Comentado
+              <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center 
+                              group-hover:scale-105 transition-transform shadow-orange">
+                <span className="text-white font-heading font-black text-lg leading-none">M</span>
+              </div>
+              <div>
+                <span className="font-heading font-bold text-white text-lg leading-none block">
+                  Maxi Viajes
+                </span>
+                <span className="font-body text-white/50 text-xs">
+                  Traslados Premium
+                </span>
+              </div>
+            */}
+            <img
+              src="/logo-traslados-premium.png"
+              alt="Maxi Viajes Logo"
+              className="h-12 w-auto group-hover:scale-105 transition-transform duration-300"
+            />
           </motion.a>
 
           {/* Nav desktop */}
@@ -88,8 +95,8 @@ export default function Header() {
                 <button
                   key={link.href}
                   onClick={() => handleNavClick(link.href)}
-                  className={`nav-link px-4 py-2 rounded-lg transition-all duration-200
-                    ${isActive ? 'text-secondary bg-white/5' : 'hover:bg-white/5'}`}
+                  className={`nav-link px-4 py-2 transition-all duration-200
+                    ${isActive ? 'text-secondary font-semibold' : 'text-white/70 hover:text-white'}`}
                 >
                   {link.label}
                   {isActive && (
@@ -148,8 +155,8 @@ export default function Header() {
                 <button
                   key={link.href}
                   onClick={() => handleNavClick(link.href)}
-                  className="text-left text-white/90 hover:text-secondary font-body font-medium 
-                             py-3 px-4 rounded-xl hover:bg-white/5 transition-all duration-200"
+                  className="text-left text-white/80 hover:text-secondary font-body font-medium 
+                             py-3 px-4 rounded-xl transition-all duration-200"
                 >
                   {link.label}
                 </button>

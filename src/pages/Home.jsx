@@ -10,6 +10,8 @@ import About from '../components/About'
 import Services from '../components/Services'
 import Destinations from '../components/Destinations'
 import Fleet from '../components/Fleet'
+import PremiumShowcase from '../components/PremiumShowcase'
+
 import CTA from '../components/CTA'
 import Footer from '../components/Footer'
 import FloatingWhatsApp from '../components/FloatingWhatsApp'
@@ -20,12 +22,12 @@ export default function Home() {
     <>
       <Helmet>
         {/* SEO básico */}
-        <title>Maxi Viajes - Traslados Premium desde San Miguel del Monte</title>
+        <title>Maxi Viajes - Traslados Premium en todo Buenos Aires</title>
         <meta
           name="description"
           content={`${SITE.description} Contacto: ${CONTACT.phoneDisplay}`}
         />
-        <meta name="keywords" content="traslados, San Miguel del Monte, aeropuerto, Costa Atlántica, remis, taxi, viajes" />
+        <meta name="keywords" content="traslados, Buenos Aires, aeropuerto, Capital Federal, Costa Atlántica, remis, taxi, viajes" />
         <meta name="author" content="Maxi Viajes" />
         <link rel="canonical" href="https://maxiviajes.com.ar/" />
 
@@ -54,7 +56,8 @@ export default function Home() {
           <About />
           <Services />
           <Destinations />
-          <Fleet />
+          {/* <Fleet /> */}
+          <PremiumShowcase />
           <CTA />
         </main>
         <Footer />

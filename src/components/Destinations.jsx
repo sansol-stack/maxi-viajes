@@ -14,7 +14,7 @@ export default function Destinations() {
     <Section
       id="destinos"
       title='¿A dónde <span class="text-secondary">viajás</span>?'
-      subtitle="Cubrimos los destinos más solicitados desde San Miguel del Monte. Consultanos si el tuyo no está en la lista."
+      subtitle="Cubrimos los destinos más solicitados en todo Buenos Aires. Consultanos si el tuyo no está en la lista."
       light
     >
       {/* Mapa decorativo (SVG simple de Argentina) */}
