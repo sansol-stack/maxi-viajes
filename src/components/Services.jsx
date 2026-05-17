@@ -151,10 +151,10 @@ export default function Services() {
                         {svc.badge}
                       </span>
                     </div>
-                    <p className="font-heading text-white/50 text-sm font-semibold mb-3 italic">
+                    <p className="font-heading text-white/70 text-sm font-semibold mb-3 italic">
                       "{svc.tagline}"
                     </p>
-                    <p className="font-body text-white/45 text-sm leading-relaxed">
+                    <p className="font-body text-white/60 text-sm leading-relaxed">
                       {svc.description}
                     </p>
                   </div>
@@ -164,16 +164,16 @@ export default function Services() {
                     {svc.bullets.map((b) => (
                       <div key={b} className="flex items-start gap-2">
                         <span className="w-1 h-1 rounded-full bg-secondary mt-1.5 flex-shrink-0" />
-                        <span className="font-body text-xs text-white/50 leading-snug">{b}</span>
+                        <span className="font-body text-xs text-white/70 leading-snug">{b}</span>
                       </div>
                     ))}
                   </div>
 
                   {/* Arrow CTA */}
                   <div className="flex-shrink-0 self-center">
-                    <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center
+                    <div className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center
                                     group-hover:border-secondary group-hover:bg-secondary/20 transition-all duration-300">
-                      <ArrowRight size={16} className="text-white/30 group-hover:text-secondary
+                      <ArrowRight size={16} className="text-white/50 group-hover:text-secondary
                                                         group-hover:translate-x-0.5 transition-all duration-300" />
                     </div>
                   </div>

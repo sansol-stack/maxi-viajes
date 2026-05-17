@@ -44,7 +44,7 @@ export default {
         // Degradados sutiles que simulan un acabado satinado o metalizado oscuro
         'gradient-hero': 'linear-gradient(135deg, #000000 0%, #121212 50%, #1e1e1e 100%)',
         'gradient-cta': 'linear-gradient(135deg, #121212 0%, #0a0a0a 100%)',
-        'gradient-card': 'linear-gradient(135deg, #1e1e1e 0%, #121212 100%)',
+        'gradient-card': 'linear-gradient(154deg, #4b4b4bff 0%, #121212 100%)',
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',

@@ -11,6 +11,7 @@ import Services from '../components/Services'
 import Destinations from '../components/Destinations'
 import Fleet from '../components/Fleet'
 import PremiumShowcase from '../components/PremiumShowcase'
+import Coverage from '../components/Coverage'
 
 import CTA from '../components/CTA'
 import Footer from '../components/Footer'
@@ -55,6 +56,7 @@ export default function Home() {
           <Hero />
           <About />
           <Services />
+          {/* <Coverage /> */}
           {/* <Destinations /> */}
           {/* <Fleet /> */}
           <PremiumShowcase />

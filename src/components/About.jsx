@@ -3,7 +3,7 @@
  */
 
 import { motion } from 'framer-motion'
-import { Car } from 'lucide-react'
+import { Users, Wind, Gauge, ArrowRight } from 'lucide-react'
 import Section from './common/Section'
 import DifferentiatorBox from './common/DifferentiatorBox'
 import Button from './common/Button'
@@ -12,6 +12,11 @@ import { SITE } from '../constants/config'
 import { staggerContainer, slideLeft, slideRight } from '../utils/animations'
 
 export default function About() {
+  const scrollToPremium = () => {
+    const el = document.getElementById('premium')
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   return (
     <Section
       id="nosotros"
@@ -70,61 +75,66 @@ export default function About() {
 
         {/* ── Columna derecha: Visual ── */}
         <motion.div
-          className="relative flex items-center justify-center"
+          className="relative flex items-center justify-center cursor-pointer group"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
           variants={slideRight}
+          onClick={scrollToPremium}
         >
           {/* Figura principal */}
           <div className="relative w-full max-w-sm mx-auto">
             {/* Fondo con gradiente */}
-            <div className="absolute inset-0 bg-gradient-card rounded-3xl opacity-10 blur-3xl scale-110" />
+            <div className="absolute inset-0 bg-secondary/20 rounded-3xl opacity-10 blur-3xl scale-110 group-hover:opacity-30 transition-opacity duration-500" />
 
             {/* Card principal */}
-            <div className="relative bg-gradient-card rounded-3xl p-10 flex flex-col items-center text-center">
+            <div className="relative bg-gradient-card rounded-3xl p-10 flex flex-col items-center text-center border border-white/10 group-hover:border-secondary/40 transition-all duration-500 shadow-2xl">
               {/* Decoraciones */}
-              <div className="absolute top-4 right-4 w-16 h-16 rounded-full bg-white/10" />
-              <div className="absolute bottom-4 left-4 w-10 h-10 rounded-full bg-white/10" />
-
-              {/* Icono */}
-              {/* <div className="w-24 h-24 bg-white/20 rounded-2xl flex items-center justify-center mb-6 
-                              animate-float shadow-lg">
-                <Car size={48} className="text-white" />
-              </div> */}
+              <div className="absolute top-4 right-4 w-20 h-20 rounded-full bg-[radial-gradient(circle,_var(--tw-gradient-stops))] from-white/15 to-transparent opacity-60" />
+              <div className="absolute bottom-10 left-4 w-12 h-12 rounded-full bg-[radial-gradient(circle,_var(--tw-gradient-stops))] from-white/10 to-transparent opacity-40" />
 
               {/* Imagen */}
-              <img src="./public/miniatura3dhiace.png" alt="miniatura toyota hiace" className="w-full max-w-sm mx-auto" />
+              <img
+                src="src\assets\miniatura3dhiace.png"
+                alt="miniatura toyota hiace"
+                className="w-full max-w-sm mx-auto drop-shadow-[0_17px_15px_rgba(0,0,0,0.98)]  z-10"
+              />
 
               {/* Texto */}
-              <h3 className="font-heading text-white text-2xl font-bold mb-2">Toyota Hiace</h3>
-              <p className="font-body text-white/70 text-sm mb-6">
-                Nuestro vehículo estrella para tu comodidad
+              <h3 className="font-heading text-white text-2xl font-black mb-1">Toyota Hiace</h3>
+              <p className="font-body text-secondary text-xs font-bold uppercase tracking-[0.2em] mb-6">
+                Unidad Business Class
               </p>
 
               {/* Stats */}
               <div className="grid grid-cols-3 gap-4 w-full">
                 {[
-                  { num: '6', label: 'Pasajeros' },
-                  { num: 'A/C', label: 'Climatizado' },
-                  { num: '∞', label: 'km recorridos' },
-                ].map(({ num, label }) => (
-                  <div key={label} className="bg-white/10 rounded-xl p-3">
-                    <p className="font-heading text-white text-xl font-bold">{num}</p>
-                    <p className="font-body text-white/60 text-xs mt-1">{label}</p>
+                  { num: '6', label: 'Pasajeros', Icon: Users },
+                  { num: 'A/C', label: 'Dual', Icon: Wind },
+                  { num: 'VIP', label: 'Butacas', Icon: Gauge },
+                ].map(({ num, label, Icon }) => (
+                  <div key={label} className="bg-white/5 border border-white/5 rounded-xl p-3 flex flex-col items-center group-hover:bg-white/10 transition-colors">
+                    <Icon size={24} className="text-secondary mb-2 opacity-80" />
+                    <p className="font-heading text-white text-lg font-black leading-none">{num}</p>
+                    <p className="font-body text-white/40 text-[9px] uppercase font-bold tracking-tighter mt-1">{label}</p>
                   </div>
                 ))}
+              </div>
+
+              {/* Indicador de acción */}
+              <div className="mt-6 flex items-center gap-2 text-secondary text-[10px] font-heading font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                Ver detalles <ArrowRight size={12} />
               </div>
             </div>
 
             {/* Badge flotante */}
             <motion.div
-              className="absolute -bottom-5 -right-5 bg-white rounded-2xl shadow-card px-4 py-3"
-              animate={{ rotate: [0, 2, -2, 0] }}
-              transition={{ duration: 4, repeat: Infinity }}
+              className="absolute -bottom-5 -right-5 bg-white rounded-2xl shadow-orange px-5 py-3 z-20"
+              animate={{ rotate: [0, 1.5, -1.5, 0], y: [0, 4, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
             >
-              <p className="font-heading text-secondary text-sm font-bold">Dueño al volante</p>
-              <p className="font-body text-gray-400 text-xs">Atención personalizada</p>
+              <p className="font-heading text-primary text-sm font-black leading-none mb-0.5">Dueño al volante</p>
+              <p className="font-body text-gray-500 text-[10px] font-bold uppercase tracking-wider">Atención VIP</p>
             </motion.div>
           </div>
         </motion.div>

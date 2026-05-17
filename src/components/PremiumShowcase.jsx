@@ -82,8 +82,8 @@ function ProgressDots({ total, active, onSelect }) {
                     key={i}
                     onClick={() => onSelect(i)}
                     className={`transition-all duration-300 rounded-full ${i === active
-                            ? 'w-7 h-1.5 bg-secondary'
-                            : 'w-1.5 h-1.5 bg-white/25 hover:bg-white/50'
+                        ? 'w-7 h-1.5 bg-secondary'
+                        : 'w-1.5 h-1.5 bg-white/25 hover:bg-white/50'
                         }`}
                     aria-label={`Ir a imagen ${i + 1}`}
                 />
@@ -130,7 +130,7 @@ export default function PremiumShowcase() {
             aria-label="Experiencia Premium Toyota Hiace"
         >
             {/* ── Header ── */}
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-14 text-center">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-2 text-center">
                 <motion.div
                     initial={{ opacity: 0, y: 28 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -144,7 +144,7 @@ export default function PremiumShowcase() {
                         Experiencia a bordo
                     </div>
 
-                    <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-5 leading-[1.05]">
+                    <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-5 leading-[1.05]">
                         Viajá como{' '}
                         <span
                             className="text-secondary"
@@ -153,7 +153,7 @@ export default function PremiumShowcase() {
                             Business Class
                         </span>
                     </h2>
-                    <p className="font-body text-white/45 text-lg max-w-lg mx-auto leading-relaxed">
+                    <p className="font-body text-white/45 text-md mb-2 max-w-lg mx-auto leading-relaxed">
                         La Toyota Hiace redefinida con un interior que compite con los mejores
                         vehículos ejecutivos del mercado.
                     </p>
@@ -161,10 +161,10 @@ export default function PremiumShowcase() {
             </div>
 
             {/* ── Slider principal ── */}
-            <div className="grid lg:grid-cols-[3fr_2fr] min-h-[560px] lg:min-h-[640px]">
+            <div className="grid lg:grid-cols-[3fr_2fr] min-h-[500px] lg:min-h-[580px]">
 
                 {/* Imagen */}
-                <div className="relative overflow-hidden bg-zinc-950 min-h-[300px] sm:min-h-[420px]">
+                <div className="relative overflow-hidden bg-zinc-950 min-h-[280px] sm:min-h-[380px]">
                     <AnimatePresence custom={dir} mode="popLayout">
                         <motion.div
                             key={slide.id}
@@ -245,7 +245,7 @@ export default function PremiumShowcase() {
                             className="h-full bg-secondary"
                             initial={{ width: '0%' }}
                             animate={{ width: '100%' }}
-                            transition={{ duration: 7, ease: 'linear' }}
+                            transition={{ duration: 10, ease: 'linear' }}
                             onAnimationComplete={() => {
                                 // Auto-advance
                                 go(active === SLIDES.length - 1 ? 0 : active + 1)
@@ -255,7 +255,7 @@ export default function PremiumShowcase() {
                 </div>
 
                 {/* Panel de texto */}
-                <div className="relative flex flex-col justify-center px-7 lg:px-12 py-12 lg:py-16 bg-dark border-l border-white/5">
+                <div className="relative flex flex-col justify-center px-4 lg:px-12 py-4 lg:pt-4 lg:pb-8 bg-dark border-l border-white/5">
                     {/* Luces de fondo */}
                     <div className="absolute -top-20 right-0 w-72 h-72 bg-secondary/4 rounded-full blur-3xl pointer-events-none" />
                     <div className="absolute bottom-0 left-0 w-40 h-40 bg-white/2 rounded-full blur-2xl pointer-events-none" />
@@ -279,13 +279,13 @@ export default function PremiumShowcase() {
 
                             {/* Subtítulo */}
                             <motion.p variants={itemVars}
-                                className="font-heading text-secondary text-[10px] font-bold uppercase tracking-[0.22em] mb-2.5">
+                                className="font-heading text-secondary text-[9px] font-bold uppercase tracking-[0.22em] mb-2.5">
                                 {slide.subtitle}
                             </motion.p>
 
                             {/* Título */}
                             <motion.h3 variants={itemVars}
-                                className="font-heading text-2xl sm:text-3xl font-black text-white leading-tight mb-4">
+                                className="font-heading text-xl sm:text-2xl font-black text-white leading-tight mb-4">
                                 {slide.title}
                             </motion.h3>
 
@@ -330,7 +330,7 @@ export default function PremiumShowcase() {
 
             {/* ── Stats strip ── */}
             <div className="border-t border-white/5">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
                         {[
                             { num: '4', unit: 'butacas VIP', label: 'Reclinación eléctrica' },
@@ -340,7 +340,7 @@ export default function PremiumShowcase() {
                         ].map(({ num, unit, label }) => (
                             <div key={label} className="group">
                                 <div className="flex items-baseline gap-2 mb-1">
-                                    <span className="font-heading text-3xl sm:text-4xl font-black text-white group-hover:text-secondary transition-colors duration-300">
+                                    <span className="font-heading text-xl sm:text-2xl font-black text-white group-hover:text-secondary transition-colors duration-300">
                                         {num}
                                     </span>
                                     <span className="font-heading text-xs font-semibold text-secondary uppercase tracking-wider">
