@@ -10,6 +10,7 @@ import Button from './common/Button'
 import { DIFFERENTIATORS } from '../constants/differentiators'
 import { SITE } from '../constants/config'
 import { staggerContainer, slideLeft, slideRight } from '../utils/animations'
+import imgMiniatura from '../assets/miniatura3dhiace.png'
 
 export default function About() {
   const scrollToPremium = () => {
@@ -95,7 +96,7 @@ export default function About() {
 
               {/* Imagen */}
               <img
-                src="src\assets\miniatura3dhiace.png"
+                src={imgMiniatura}
                 alt="miniatura toyota hiace"
                 className="w-full max-w-sm mx-auto drop-shadow-[0_17px_15px_rgba(0,0,0,0.98)]  z-10"
               />
