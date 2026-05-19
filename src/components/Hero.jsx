@@ -1,53 +1,79 @@
 /**
- * Hero - Slideshow cinematográfico con fotos reales de la Toyota Hiace
+ * Hero - Slideshow cinematográfico con 5 fotos reales de la Toyota Hiace
  *
- * SETUP: copiar las 3 fotos a src/assets/
- *   hero-front.jpg   → foto frontal dorada
- *   hero-sunset.jpg  → foto trasera atardecer
- *   hero-door.jpg    → foto puerta abierta crepúsculo
+ * SETUP: copiar los archivos a src/assets/
+ *   hero-front.jpg       → frontal dorada al atardecer (campo)
+ *   hero-nose.jpg        → frontal nocturna en edificio premium
+ *   hero-sheraton.jpg    → trasera en puerta del Sheraton
+ *   hero-fourseasons.jpg → frontal nocturna en Four Seasons BA
+ *   hero-dazzler.jpg     → lateral en Dazzler by Wyndham
  */
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { MessageCircle, ChevronDown, Star, Shield, Clock, ChevronLeft, ChevronRight } from 'lucide-react'
+import {
+  MessageCircle, ChevronDown, Star, Shield, Clock,
+  ChevronLeft, ChevronRight
+} from 'lucide-react'
 import Button from './common/Button'
 
-// ── Importar las fotos del vehículo ─────────────────────────────────────────
-import imgFront from '../assets/hero-front.jpg'
-import imgSunset from '../assets/hero-sunset.jpg'
-import imgDoor from '../assets/hero-door.jpg'
+import imgFront       from '../assets/hero-front.jpg'
+import imgNose        from '../assets/hero-nose.jpg'
+import imgSheraton    from '../assets/hero-sheraton.jpg'
+import imgFourSeasons from '../assets/hero-fourseasons.jpg'
+import imgDazzler     from '../assets/hero-dazzler.jpg'
 
-// ── Datos de cada slide ──────────────────────────────────────────────────────
+// ── Slides — orden narrativo ─────────────────────────────────────────────────
+// 1. Campo al atardecer  → origen, naturaleza, elegancia relajada
+// 2. Four Seasons        → lujo urbano nocturno, posicionamiento top
+// 3. Sheraton            → contexto corporativo, negocios
+// 4. Nose (nocturna)     → presencia imponente, luces encendidas
+// 5. Dazzler             → versatilidad, día, ciudad
 const SLIDES = [
   {
     id: 0,
     src: imgFront,
-    pos: 'center 60%',       // object-position para esta foto
+    pos: 'center 62%',
     label: 'Toyota Hiace VX Premium',
-    accent: 'Diseño que impone presencia',
+    accent: 'Elegancia que se siente desde el primer kilómetro',
   },
   {
     id: 1,
-    src: imgSunset,
+    src: imgFourSeasons,
     pos: 'center 55%',
-    label: 'Cada destino, una experiencia',
-    accent: 'Viajes de larga distancia',
+    label: 'Four Seasons Buenos Aires',
+    accent: 'Donde los mejores hoteles confían en nosotros',
   },
   {
     id: 2,
-    src: imgDoor,
+    src: imgSheraton,
+    pos: 'center 45%',
+    label: 'Sheraton Buenos Aires',
+    accent: 'Traslados ejecutivos al nivel que merecés',
+  },
+  {
+    id: 3,
+    src: imgNose,
     pos: 'center 50%',
-    label: 'Abordaje premium garantizado',
-    accent: 'Tu viaje empieza antes de salir',
+    label: 'Presencia premium — día y noche',
+    accent: 'Siempre puntual, siempre impecable',
+  },
+  {
+    id: 4,
+    src: imgDazzler,
+    pos: 'center 50%',
+    label: 'Dazzler by Wyndham',
+    accent: 'Tu vehículo premium en cada destino',
   },
 ]
 
-const INTERVAL = 6000  // ms por slide
+const INTERVAL = 5500
 
 export default function Hero() {
-  const [active, setActive] = useState(0)
-  const [prev, setPrev] = useState(null)
+  const [active, setActive]               = useState(0)
+  const [prev,   setPrev]                 = useState(null)
   const [transitioning, setTransitioning] = useState(false)
+  const timerRef = useRef(null)
 
   function goTo(idx) {
     if (transitioning || idx === active) return
@@ -55,31 +81,54 @@ export default function Hero() {
     setActive(idx)
     setTransitioning(true)
     setTimeout(() => setTransitioning(false), 1100)
+    resetTimer()
   }
 
   function goPrev() { goTo(active === 0 ? SLIDES.length - 1 : active - 1) }
   function goNext() { goTo(active === SLIDES.length - 1 ? 0 : active + 1) }
 
-  function scrollToServices() {
-    document.getElementById('servicios')?.scrollIntoView({ behavior: 'smooth' })
+  function resetTimer() {
+    if (timerRef.current) {
+      clearInterval(timerRef.current)
+    }
+    timerRef.current = setInterval(() => {
+      setActive(prev => (prev === SLIDES.length - 1 ? 0 : prev + 1))
+    }, INTERVAL)
   }
-  function scrollToStart() {
+
+  useEffect(() => {
+    // Solo inicia el timer si no estamos en transición
+    if (transitioning) return
+    
+    timerRef.current = setInterval(() => {
+      setActive(prev => (prev === SLIDES.length - 1 ? 0 : prev + 1))
+    }, INTERVAL)
+    
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+      }
+    }
+  }, [transitioning]) // eslint-disable-line
+
+  function scrollToNosotros() {
     document.getElementById('nosotros')?.scrollIntoView({ behavior: 'smooth' })
+  }
+  function scrollToServicios() {
+    document.getElementById('servicios')?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
     <section
       id="inicio"
       className="relative min-h-screen flex items-center overflow-hidden bg-dark"
-      aria-label="Inicio - Maxi Viajes"
+      aria-label="Inicio — Maxi Viajes"
     >
 
-      {/* ════════════════════════════════════════════════════
-          FONDO: stack de imágenes con Ken Burns + crossfade
-          ════════════════════════════════════════════════════ */}
+      {/* ════════ FONDO: crossfade + Ken Burns ════════ */}
       <div className="absolute inset-0 z-0">
 
-        {/* Imagen saliente — fade out */}
+        {/* Imagen saliente */}
         {prev !== null && (
           <motion.div
             key={`prev-${prev}`}
@@ -98,13 +147,16 @@ export default function Hero() {
           </motion.div>
         )}
 
-        {/* Imagen activa — zoom sutil Ken Burns */}
+        {/* Imagen activa con zoom Ken Burns */}
         <motion.div
           key={`active-${active}`}
           className="absolute inset-0"
-          initial={{ opacity: 0, scale: 1.06 }}
+          initial={{ opacity: 0, scale: 1.07 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ opacity: { duration: 1.1, ease: 'easeInOut' }, scale: { duration: 7, ease: 'linear' } }}
+          transition={{
+            opacity: { duration: 1.1, ease: 'easeInOut' },
+            scale:   { duration: 7,   ease: 'linear' },
+          }}
         >
           <img
             src={SLIDES[active].src}
@@ -114,31 +166,25 @@ export default function Hero() {
           />
         </motion.div>
 
-        {/* Capas de oscurecimiento — preserva legibilidad del texto */}
-        {/* Base oscura para texto blanco */}
-        <div className="absolute inset-0 bg-black/50" />
-        {/* Gradiente desde izquierda — área del copy */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
-        {/* Gradiente inferior — fade al dark del siguiente bloque */}
-        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-dark to-transparent" />
-        {/* Viñeta superior */}
+        {/* Capas de oscurecimiento */}
+        <div className="absolute inset-0 bg-black/55" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-dark to-transparent" />
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-dark/60 to-transparent" />
       </div>
 
-      {/* ════════════════════════════════════════════════════
-          CONTENIDO PRINCIPAL
-          ════════════════════════════════════════════════════ */}
+      {/* ════════ CONTENIDO ════════ */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24 relative z-10">
         <div className="max-w-2xl">
 
-          {/* Badge dinámico del slide */}
+          {/* Badge dinámico */}
           <AnimatePresence mode="wait">
             <motion.div
               key={`badge-${active}`}
               initial={{ opacity: 0, x: -16 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 16 }}
-              transition={{ duration: 0.45, ease: 'easeOut' }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
               className="inline-flex items-center gap-2.5 bg-white/10 backdrop-blur-sm
                          border border-white/20 text-white/85 text-xs font-body
                          px-4 py-2 rounded-full mb-7"
@@ -148,41 +194,38 @@ export default function Hero() {
             </motion.div>
           </AnimatePresence>
 
-          {/* Título principal — estático, el badge cambia */}
+          {/* Título */}
           <motion.h1
-            className="font-heading text-4xl font-black text-white mb-5 leading-[1.03]"
+            className="font-heading text-4xl sm:text-5xl lg:text-6xl xl:text-7xl
+                       font-black text-white mb-5 leading-[1.03]"
             initial={{ opacity: 0, y: 32 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
             style={{ textShadow: '0 2px 20px rgba(0,0,0,0.5)' }}
           >
             Viajes con{' '}
-            <span
-              className="text-secondary"
-              style={{ textShadow: '0 0 40px rgba(212,175,55,0.4)' }}
-            >
+            <span className="text-secondary"
+              style={{ textShadow: '0 0 40px rgba(212,175,55,0.4)' }}>
               Confort
             </span>
             ,{' '}
             <span className="text-white/90">Seguridad</span>
             <br className="hidden sm:block" />
             {' '}y{' '}
-            <span
-              className="text-secondary"
-              style={{ textShadow: '0 0 40px rgba(212,175,55,0.4)' }}
-            >
+            <span className="text-secondary"
+              style={{ textShadow: '0 0 40px rgba(212,175,55,0.4)' }}>
               Puntualidad
             </span>
           </motion.h1>
 
           {/* Subtítulo */}
           <motion.p
-            className="font-body text-white/75 text-base mb-9 max-w-lg leading-relaxed"
+            className="font-body text-white/65 text-base sm:text-lg mb-9 max-w-lg leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.22 }}
           >
-            Traslados premium de media y larga distancia en Buenos Aires.
+            Traslados premium de media y larga distancia desde San Miguel del Monte.
             Aeropuertos, Costa Atlántica y viajes ejecutivos — con atención personalizada
             del dueño en cada kilómetro.
           </motion.p>
@@ -198,12 +241,12 @@ export default function Hero() {
               <MessageCircle size={20} />
               Consultar Disponibilidad
             </Button>
-            <Button variant="ghost" size="lg" onClick={scrollToServices}>
+            <Button variant="ghost" size="lg" onClick={scrollToServicios}>
               Conocer Servicios
             </Button>
           </motion.div>
 
-          {/* Stats */}
+          {/* Trust stats */}
           <motion.div
             className="flex flex-wrap gap-5"
             initial={{ opacity: 0 }}
@@ -211,9 +254,9 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.48 }}
           >
             {[
-              { icon: Star, value: '100%', label: 'Satisfacción' },
+              { icon: Star,   value: '100%',  label: 'Satisfacción' },
               { icon: Shield, value: 'Seguro', label: 'Viaje garantizado' },
-              { icon: Clock, value: '24/7', label: 'Disponibilidad' },
+              { icon: Clock,  value: '24/7',   label: 'Disponibilidad' },
             ].map(({ icon: Icon, value, label }) => (
               <div key={label} className="flex items-center gap-2 text-white/65">
                 <Icon size={15} className="text-secondary" />
@@ -225,21 +268,19 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* ════════════════════════════════════════════════════
-          CONTROLES DEL SLIDER — esquina inferior derecha
-          ════════════════════════════════════════════════════ */}
+      {/* ════════ CONTROLES — esquina inferior derecha ════════ */}
       <div className="absolute bottom-20 right-6 sm:right-10 z-20 flex flex-col items-end gap-4">
 
-        {/* Label del slide activo */}
+        {/* Label del slide */}
         <AnimatePresence mode="wait">
           <motion.p
             key={`label-${active}`}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.35 }}
-            className="font-heading text-white/50 text-xs tracking-widest uppercase text-right
-                       hidden sm:block max-w-[180px]"
+            transition={{ duration: 0.3 }}
+            className="font-heading text-white/45 text-xs tracking-widest uppercase
+                       text-right hidden sm:block max-w-[210px]"
           >
             {SLIDES[active].label}
           </motion.p>
@@ -274,16 +315,19 @@ export default function Hero() {
               key={i}
               onClick={() => goTo(i)}
               className="relative h-0.5 rounded-full overflow-hidden transition-all duration-300"
-              style={{ width: i === active ? '32px' : '12px', background: 'rgba(255,255,255,0.2)' }}
+              style={{
+                width: i === active ? '28px' : '10px',
+                background: 'rgba(255,255,255,0.2)',
+              }}
               aria-label={`Ir a imagen ${i + 1}`}
             >
               {i === active && (
                 <motion.div
+                  key={`prog-${active}`}
                   className="absolute inset-y-0 left-0 bg-secondary"
                   initial={{ width: '0%' }}
                   animate={{ width: '100%' }}
                   transition={{ duration: INTERVAL / 1000, ease: 'linear' }}
-                  key={`prog-${active}`}
                 />
               )}
             </button>
@@ -291,25 +335,21 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* ════════════════════════════════════════════════════
-          INDICADOR DE SCROLL
-          ════════════════════════════════════════════════════ */}
+      {/* ════════ SCROLL INDICATOR ════════ */}
       <motion.button
-        onClick={scrollToStart}
+        onClick={scrollToNosotros}
         className="absolute bottom-7 left-1/2 -translate-x-1/2 z-20
                    text-white/40 hover:text-white/80 transition-colors
                    flex flex-col items-center gap-1.5"
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-        aria-label="Ver más"
+        aria-label="Explorar más"
       >
         <span className="font-body text-[10px] tracking-widest uppercase">Explorar</span>
         <ChevronDown size={18} />
       </motion.button>
 
-      {/* ════════════════════════════════════════════════════
-          BARRA DE PROGRESO GLOBAL — borde inferior
-          ════════════════════════════════════════════════════ */}
+      {/* ════════ BARRA DE PROGRESO GLOBAL ════════ */}
       <div className="absolute bottom-0 left-0 right-0 h-px bg-white/8 z-20">
         <motion.div
           key={`global-${active}`}
@@ -317,7 +357,6 @@ export default function Hero() {
           initial={{ width: '0%' }}
           animate={{ width: '100%' }}
           transition={{ duration: INTERVAL / 1000, ease: 'linear' }}
-          onAnimationComplete={goNext}
         />
       </div>
     </section>
