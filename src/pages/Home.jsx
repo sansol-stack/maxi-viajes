@@ -58,7 +58,7 @@ export default function Home() {
           <Services />
           {/* <Coverage /> */}
           {/* <Destinations /> */}
-          {/* <Fleet /> */}
+          <Fleet />
           <PremiumShowcase />
           <CTA />
         </main>

@@ -21,8 +21,12 @@ export function generateWhatsAppLink(customMessage) {
  * @param {string} [customMessage] - Mensaje personalizado (opcional)
  */
 export function openWhatsApp(customMessage) {
-  const link = generateWhatsAppLink(customMessage)
-  window.open(link, '_blank', 'noopener,noreferrer')
+  if (window.showQuoteModal) {
+    window.showQuoteModal(customMessage)
+  } else {
+    const link = generateWhatsAppLink(customMessage)
+    window.open(link, '_blank', 'noopener,noreferrer')
+  }
 }
 
 /**
