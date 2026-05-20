@@ -196,8 +196,7 @@ export default function Hero() {
 
           {/* Título */}
           <motion.h1
-            className="font-heading text-4xl sm:text-5xl lg:text-6xl xl:text-7xl
-                       font-black text-white mb-5 leading-[1.03]"
+            className="font-heading text-4xl font-black text-white mb-5 leading-[1.03]"
             initial={{ opacity: 0, y: 32 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
