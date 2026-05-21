@@ -44,8 +44,8 @@ export default function About() {
 
           {/* Párrafo principal */}
           <p className="font-body text-gray-600 text-base leading-relaxed mb-4">
-            <strong className="text-dark font-semibold">Maximiliano Echeverria</strong> 
-            esfundó Maxi Viajes en 2018 con una visión clara: brindar traslados donde 
+            <strong className="text-dark font-semibold">Maximiliano Echeverria </strong>  
+            fundó "Maxi Viajes" en 2018 con una visión clara: brindar traslados donde 
             la puntualidad y la seguridad sean la prioridad. Desde entonces, ha consolidado
              un equipo de trabajo que comparte su compromiso con el servicio.
           </p>

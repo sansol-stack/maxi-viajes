@@ -28,11 +28,14 @@ const PASSENGER_OPTIONS = [
   { value: '6+', label: 'Más de 6 (consultar)' },
 ]
 
-const LUGGAGE_OPTIONS = [
-  { value: 'sin_valijas', label: 'Sin valijas / equipaje de mano' },
-  { value: '1-2_valijas', label: '1-2 valijas medianas' },
-  { value: '3-4_valijas', label: '3-4 valijas grandes' },
-  { value: 'mucho_equipaje', label: 'Mucho equipaje (consultar)' },
+const LUGGAGE_QTY_OPTIONS = [
+  { value: '0', label: '0' },
+  { value: '1', label: '1' },
+  { value: '2', label: '2' },
+  { value: '3', label: '3' },
+  { value: '4', label: '4' },
+  { value: '5', label: '5' },
+  { value: '6+', label: '6+' },
 ]
 
 const WAIT_OPTIONS = [
@@ -49,13 +52,13 @@ function buildWhatsAppMessage(data, initialMsg) {
   const lines = [
     `Hola Maxi! Te escribo desde la web para consultar disponibilidad.`,
     ``,
-    `👤 *Nombre:* ${data.name}`,
-    `📅 *Fecha del viaje:* ${data.date}`,
-    `📍 *Desde:* ${data.from}`,
-    `📍 *Hasta:* ${data.to}`,
-    `👥 *Pasajeros:* ${data.passengers}`,
-    `🕐 *¿Necesita espera?* ${data.wait}`,
-    `🧳 *Equipaje:* ${data.luggage}`,
+    `- *Nombre:* ${data.name}`,
+    `- *Fecha del viaje:* ${data.date}`,
+    `- *Desde:* ${data.from}`,
+    `- *Hasta:* ${data.to}`,
+    `- *Pasajeros:* ${data.passengers}`,
+    `- *¿Necesita espera?* ${data.wait}`,
+    `- *Equipaje:* ${data.luggage}`,
   ]
 
   if (initialMsg) {
@@ -79,7 +82,9 @@ const INITIAL_STATE = {
   to: '',
   passengers: '',
   wait: '',
-  luggage: '',
+  luggagePersonal: '0',
+  luggageCarryOn: '0',
+  luggageStandard: '0',
 }
 
 // ── Componente Principal ──────────────────────────────────────────────────────
@@ -168,7 +173,6 @@ export default function QuoteModal({ isOpen, onClose, initialMsg }) {
     if (!form.to.trim()) newErrors.to = 'Indicá el destino'
     if (!form.passengers) newErrors.passengers = 'Seleccioná la cantidad de pasajeros'
     if (!form.wait) newErrors.wait = 'Indicá si necesitás espera'
-    if (!form.luggage) newErrors.luggage = 'Indicá el tipo de equipaje'
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -214,7 +218,12 @@ export default function QuoteModal({ isOpen, onClose, initialMsg }) {
     // Obtener labels amigables de los selects
     const passLabel = PASSENGER_OPTIONS.find((o) => o.value === form.passengers)?.label || form.passengers
     const waitLabel = WAIT_OPTIONS.find((o) => o.value === form.wait)?.label || form.wait
-    const luggageLabel = LUGGAGE_OPTIONS.find((o) => o.value === form.luggage)?.label || form.luggage
+
+    const luggageStr = [
+      form.luggagePersonal !== '0' ? `${form.luggagePersonal} Art. Personal` : '',
+      form.luggageCarryOn !== '0' ? `${form.luggageCarryOn} Carry-on (0-10kg)` : '',
+      form.luggageStandard !== '0' ? `${form.luggageStandard} Valija (10-23kg)` : '',
+    ].filter(Boolean).join(', ') || 'Sin equipaje'
 
     const message = buildWhatsAppMessage(
       {
@@ -224,7 +233,7 @@ export default function QuoteModal({ isOpen, onClose, initialMsg }) {
         to: form.to,
         passengers: passLabel,
         wait: waitLabel,
-        luggage: luggageLabel,
+        luggage: luggageStr,
       },
       initialMsg
     )
@@ -307,7 +316,7 @@ export default function QuoteModal({ isOpen, onClose, initialMsg }) {
                       animate={{
                         width: `${Math.min(
                           100,
-                          (Object.values(form).filter(Boolean).length / 7) * 100
+                          (Object.values(form).filter(Boolean).length / 9) * 100
                         )}%`,
                       }}
                       transition={{ duration: 0.3 }}
@@ -399,15 +408,66 @@ export default function QuoteModal({ isOpen, onClose, initialMsg }) {
                       placeholder="Seleccioná opción"
                     />
 
-                    <CustomSelect
-                      icon={Luggage}
-                      label="Valijas / Equipaje"
-                      value={form.luggage}
-                      options={LUGGAGE_OPTIONS}
-                      onChange={(val) => handleSelectChange('luggage', val)}
-                      error={errors.luggage}
-                      placeholder="Seleccioná tipo de equipaje"
-                    />
+                    {/* Sección de Equipaje Detallado */}
+                    <div className="space-y-3 pt-2">
+                      <label className="flex items-center gap-1.5 font-heading text-white/80 text-xs font-semibold mb-1.5 uppercase tracking-wide">
+                        <Luggage size={13} className="text-secondary flex-shrink-0" />
+                        Equipaje (Cantidad por tipo)
+                      </label>
+
+                      <div className="space-y-4 bg-black/20 p-4 rounded-3xl border border-white/5">
+                        {/* Artículo Personal */}
+                        <div className="flex items-center justify-between gap-4">
+                          <div className="flex flex-col">
+                            <span className="font-body text-sm text-white/70 leading-none mb-1">Artículo Personal</span>
+                            <span className="text-white/30 text-[10px] uppercase tracking-wider font-semibold">Mochila o bolso</span>
+                          </div>
+                          <div className="w-24">
+                            <CustomSelect
+                              value={form.luggagePersonal}
+                              options={LUGGAGE_QTY_OPTIONS}
+                              onChange={(val) => handleSelectChange('luggagePersonal', val)}
+                              placeholder="0"
+                              noLabel
+                            />
+                          </div>
+                        </div>
+
+                        {/* Carry-on */}
+                        <div className="flex items-center justify-between gap-4 border-t border-white/5 pt-4">
+                          <div className="flex flex-col">
+                            <span className="font-body text-sm text-white/70 leading-none mb-1">Carry-on <span className="text-white/40 text-xs font-body font-normal">(0-10kg)</span></span>
+                            <span className="text-white/30 text-[10px] uppercase tracking-wider font-semibold">Equipaje de mano</span>
+                          </div>
+                          <div className="w-24">
+                            <CustomSelect
+                              value={form.luggageCarryOn}
+                              options={LUGGAGE_QTY_OPTIONS}
+                              onChange={(val) => handleSelectChange('luggageCarryOn', val)}
+                              placeholder="0"
+                              noLabel
+                            />
+                          </div>
+                        </div>
+
+                        {/* Valija Estándar */}
+                        <div className="flex items-center justify-between gap-4 border-t border-white/5 pt-4">
+                          <div className="flex flex-col">
+                            <span className="font-body text-sm text-white/70 leading-none mb-1">Valija <span className="text-white/40 text-xs font-body font-normal">(10-23kg)</span></span>
+                            <span className="text-white/30 text-[10px] uppercase tracking-wider font-semibold">Equipaje de bodega</span>
+                          </div>
+                          <div className="w-24">
+                            <CustomSelect
+                              value={form.luggageStandard}
+                              options={LUGGAGE_QTY_OPTIONS}
+                              onChange={(val) => handleSelectChange('luggageStandard', val)}
+                              placeholder="0"
+                              noLabel
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
                     {/* Submit */}
                     <button
@@ -510,7 +570,7 @@ function inputClass(error) {
 /**
  * Componente de Selector Personalizado (Custom Select)
  */
-function CustomSelect({ icon: Icon, label, value, options, onChange, error, placeholder }) {
+function CustomSelect({ icon: Icon, label, value, options, onChange, error, placeholder, noLabel = false }) {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef(null)
 
@@ -528,11 +588,13 @@ function CustomSelect({ icon: Icon, label, value, options, onChange, error, plac
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <label className="flex items-center gap-1.5 font-heading text-white/80 text-xs font-semibold mb-1.5 uppercase tracking-wide">
-        <Icon size={13} className="text-secondary flex-shrink-0" />
-        {label}
-        <span className="text-secondary">*</span>
-      </label>
+      {!noLabel && (
+        <label className="flex items-center gap-1.5 font-heading text-white/80 text-xs font-semibold mb-1.5 uppercase tracking-wide">
+          {Icon && <Icon size={13} className="text-secondary flex-shrink-0" />}
+          {label}
+          <span className="text-secondary">*</span>
+        </label>
+      )}
 
       <button
         type="button"

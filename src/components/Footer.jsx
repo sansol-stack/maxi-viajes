@@ -34,21 +34,26 @@ export default function Footer() {
             <p className="font-body text-white/50 text-sm leading-relaxed max-w-xs">
               {SITE.description}
             </p>
-            {/* Redes sociales placeholder */}
-            <div className="flex gap-3 mt-6">
-              {/* <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center 
-                              hover:bg-secondary transition-colors cursor-pointer">
-                <span className="text-white text-sm font-bold">f</span>
-              </div> */}
-              <a
-                href="https://www.instagram.com/maxiviajess/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center 
-                           hover:bg-secondary transition-colors"
-              >
-                ig</a>
 
+            <div className="mt-8">
+              <p className="font-heading text-[10px] font-bold uppercase tracking-[0.2em] text-white/30 mb-4">
+                Seguinos en
+              </p>
+              <div className="flex gap-3">
+                {/* <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center 
+                                hover:bg-secondary transition-colors cursor-pointer">
+                  <span className="text-white text-sm font-bold">f</span>
+                </div> */}
+                <a
+                  href="https://www.instagram.com/maxiviajess/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center 
+                             hover:bg-secondary transition-colors"
+                >
+                  ig
+                </a>
+              </div>
             </div>
           </div>
 

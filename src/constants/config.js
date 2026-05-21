@@ -7,7 +7,7 @@ export const CONTACT = {
   /** Número de WhatsApp con código de país (sin + ni espacios) */
   whatsappNumber: '5492271410310',
   /** Número formateado para mostrar en pantalla */
-  phoneDisplay: '+54 227 141-0310',
+  phoneDisplay: '+54 2271 410310',
   /** Mensaje predeterminado para WhatsApp */
   whatsappMessage: 'Hola Maxi, me gustaría consultar sobre disponibilidad',
   /** Ubicación de la empresa */

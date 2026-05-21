@@ -4,7 +4,7 @@ import Button from './common/Button'
 import { CONTACT } from '../constants/config'
 import { slideUp } from '../utils/animations'
 
-import ctaBg from '../assets/cta-bg.jpg'
+import ctaBg from '../assets/cta-bg.webp'
 
 export default function CTA() {
   return (

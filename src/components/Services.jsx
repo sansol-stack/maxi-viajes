@@ -7,11 +7,11 @@ const SERVICES = [
     id: 'aeropuertos',
     number: '01',
     Icon: Plane,
-    badge: 'EZE · AEP',
+    badge: 'EZE · AEP · SFE',
     title: 'Traslados a Aeropuertos',
     tagline: 'Llegá a tiempo. Sin estrés.',
     description:
-      'Coordinamos el horario según tu vuelo y monitoreamos demoras en tiempo real. Salís de casa sabiendo que vas a llegar. Cubrimos Ezeiza (EZE) y Aeroparque (AEP) con margen de seguridad incluido.',
+      'Coordinamos el horario según tu vuelo y monitoreamos demoras en tiempo real. Salís de casa sabiendo que vas a llegar. Cubrimos Ezeiza (EZE), Aeroparque (AEP) y San Fernando (SFE) con margen de seguridad incluido.',
     bullets: [
       'Monitoreo de vuelos en tiempo real',
       'Puntualidad garantizada o te avisamos',

@@ -3,8 +3,8 @@ import { Users, Wind, Zap, Star, MessageCircle, ArrowRight, Leaf } from 'lucide-
 import { openWhatsApp } from '../utils/whatsappLink'
 import { staggerContainer, staggerItem } from '../utils/animations'
 
-import imgHiace   from '../assets/fleet-hiace.png'
-import imgCorolla from '../assets/fleet-corolla.png'
+import imgHiace   from '../assets/fleet-hiace.webp'
+import imgCorolla from '../assets/fleet-corolla.webp'
 
 // ── Diagrama SVG de plazas — Hiace (5 pasajeros disponibles) ─────────────────
 // Layout: conductor + 1 acompañante adelante · 2 filas de 2 VIP atrás

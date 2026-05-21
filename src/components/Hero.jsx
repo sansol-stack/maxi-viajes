@@ -6,18 +6,18 @@ import {
 } from 'lucide-react'
 import Button from './common/Button'
 
-import imgFront       from '../assets/hero-front.jpg'
-import imgNose        from '../assets/hero-nose.jpg'
-import imgSheraton    from '../assets/hero-sheraton.jpg'
-import imgFourSeasons from '../assets/hero-fourseasons.jpg'
-import imgDazzler     from '../assets/hero-dazzler.jpg'
+import imgFront       from '../assets/hero-front.webp'
+import imgNose        from '../assets/hero-nose.webp'
+import imgSheraton    from '../assets/hero-sheraton.webp'
+import imgFourSeasons from '../assets/hero-fourseasons.webp'
+import imgDazzler     from '../assets/hero-dazzler.webp'
 
 // Imágenes verticales optimizadas para móvil
-import imgFrontMobile       from '../assets/hero-front-mobile.jpg'
-import imgNoseMobile        from '../assets/hero-nose-mobile.jpg'
-import imgSheratonMobile    from '../assets/hero-scala-mobile.jpg'
-import imgFourSeasonsMobile from '../assets/hero-seats-mobile.jpg'
-import imgDazzlerMobile     from '../assets/hero-dazzler-mobile.jpg'
+import imgFrontMobile       from '../assets/hero-front-mobile.webp'
+import imgNoseMobile        from '../assets/hero-nose-mobile.webp'
+import imgSheratonMobile    from '../assets/hero-scala-mobile.webp'
+import imgFourSeasonsMobile from '../assets/hero-seats-mobile.webp'
+import imgDazzlerMobile     from '../assets/hero-dazzler-mobile.webp'
 
 const SLIDES = [
   {

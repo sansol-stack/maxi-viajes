@@ -5,11 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Star, Armchair, Zap, ChevronRight, ChevronLeft, ArrowRight, Sparkles, Wind } from 'lucide-react'
 import { openWhatsApp } from '../utils/whatsappLink'
 
-import imgExterior from '../assets/hiace-exterior.jpg'
-import imgControles from '../assets/hiace-controls.jpg'
-import imgAsientos from '../assets/hiace-seats.jpg'
-import imgRecline from '../assets/hiace-recline.jpg'
-import imgNanoe from '../assets/hiace-nanoe.jpg'
+import imgExterior from '../assets/hiace-exterior.webp'
+import imgControles from '../assets/hiace-controls.webp'
+import imgAsientos from '../assets/hiace-seats.webp'
+import imgRecline from '../assets/hiace-recline.webp'
+import imgNanoe from '../assets/hiace-nanoe.webp'
 
 // ── Datos de cada slide ──────────────────────────────────────────────────────
 const SLIDES = [
