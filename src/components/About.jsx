@@ -1,11 +1,3 @@
-/**
- * About - Sección "Sobre Nosotros"
- * Enfocada en Maximiliano Etcheverry, su historia y cobertura geográfica.
- * La flota fue separada a Fleet.jsx
- *
- * SETUP: no requiere assets nuevos.
- */
-
 import { motion } from 'framer-motion'
 import { MapPin, CheckCircle2, MessageCircle, ArrowRight } from 'lucide-react'
 import Section from './common/Section'
@@ -18,9 +10,9 @@ import { staggerContainer, slideLeft, slideRight } from '../utils/animations'
 // ── Zonas de cobertura ───────────────────────────────────────────────────────
 const COVERAGE_ZONES = [
   { label: 'Ciudad Autónoma de Buenos Aires', highlight: true },
-  { label: 'Gran Buenos Aires (todas las zonas)' },
+  { label: 'Gran Buenos Aires' },
   { label: 'Costa Atlántica — Pinamar, Cariló, Mar del Plata y más' },
-  { label: 'Aeropuertos — Ezeiza (EZE) y Aeroparque (AEP)' },
+  { label: 'Aeropuertos — Ezeiza (EZE), Aeroparque (AEP) y San Fernando (SFE)' },
   { label: 'Interior del país — Rosario, Córdoba, Mendoza y más' },
   { label: 'Destinos especiales y rutas a medida' },
 ]
@@ -52,13 +44,15 @@ export default function About() {
 
           {/* Párrafo principal */}
           <p className="font-body text-gray-600 text-base leading-relaxed mb-4">
-            <strong className="text-dark font-semibold">Maximiliano Etcheverry</strong> es el
-            dueño y conductor de Maxi Viajes. Desde {SITE.since} maneja personalmente cada
-            traslado — sin empleados, sin intermediarios, sin sorpresas.
+            <strong className="text-dark font-semibold">Maximiliano Echeverria</strong> 
+            esfundó Maxi Viajes en 2018 con una visión clara: brindar traslados donde 
+            la puntualidad y la seguridad sean la prioridad. Desde entonces, ha consolidado
+             un equipo de trabajo que comparte su compromiso con el servicio.
           </p>
           <p className="font-body text-gray-500 text-base leading-relaxed mb-8">
-            Eso significa que cuando reservás, sabés exactamente quién va a estar al volante.
-            Una persona que eligió este trabajo y lo ejerce con compromiso real en cada kilómetro.
+            Cuando reservás con nosotros, tenés la tranquilidad de saber que cada conductor es 
+            seleccionado y capacitado bajo los mismos estándares que Maxi aplica en cada kilómetro. 
+            Elegimos este trabajo por vocación y lo ejercemos con el compromiso que nuestros pasajeros merecen.
           </p>
 
           {/* Diferenciadores */}

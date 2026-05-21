@@ -1,15 +1,3 @@
-/**
- * Fleet - Sección de flota de vehículos
- * Toyota Hiace VX Premium + Toyota Corolla 1.8 XEI CVT + consulta por más
- *
- * SETUP: copiar a src/assets/
- *   fleet-hiace.png    → render oficial Hiace fondo negro
- *   fleet-corolla.png  → render oficial Corolla fondo negro
- *
- * Las imágenes tienen fondo negro puro → se usan con mix-blend-mode: lighten
- * para que el negro desaparezca y el vehículo flote sobre el fondo de la card.
- */
-
 import { motion } from 'framer-motion'
 import { Users, Wind, Zap, Star, MessageCircle, ArrowRight, Leaf } from 'lucide-react'
 import { openWhatsApp } from '../utils/whatsappLink'
@@ -67,13 +55,13 @@ function SeatDiagramHiace() {
       <Seat x={104} y={104} isVip />
 
       {/* Leyenda */}
-      <rect x="14" y="136" width="7" height="7" rx="1"
+      {/* <rect x="14" y="136" width="7" height="7" rx="1"
         fill="rgba(212,175,55,0.35)" stroke="rgba(212,175,55,0.6)" strokeWidth="0.5" />
       <text x="24" y="142" fontSize="6" fill="rgba(212,175,55,0.75)" fontFamily="sans-serif">VIP reclinable</text>
 
       <rect x="90" y="136" width="7" height="7" rx="1"
         fill="rgba(255,255,255,0.22)" stroke="rgba(255,255,255,0.4)" strokeWidth="0.5" />
-      <text x="100" y="142" fontSize="6" fill="rgba(255,255,255,0.35)" fontFamily="sans-serif">Estándar</text>
+      <text x="100" y="142" fontSize="6" fill="rgba(255,255,255,0.35)" fontFamily="sans-serif">Estándar</text> */}
     </svg>
   )
 }
@@ -119,8 +107,8 @@ function SeatDiagramCorolla() {
       <Seat x={123} y={72} />
 
       {/* Contador trasero */}
-      <text x="80" y="108" textAnchor="middle" fontSize="6"
-        fill="rgba(255,255,255,0.35)" fontFamily="sans-serif">3 plazas traseras</text>
+     {/*  <text x="80" y="108" textAnchor="middle" fontSize="6"
+        fill="rgba(255,255,255,0.35)" fontFamily="sans-serif">3 plazas traseras</text> */}
     </svg>
   )
 }
@@ -158,10 +146,10 @@ const VEHICLES = [
     version: '1.8 XEI CVT Pack 140cv',
     tagline: 'Para viajes privados y traslados ejecutivos',
     description:
-      'Sedán ejecutivo moderno, cómodo y eficiente. Ideal para traslados de hasta 3 pasajeros que priorizan discreción y puntualidad en viajes urbanos o de media distancia.',
+      'Sedán ejecutivo moderno, cómodo y eficiente. Ideal para traslados de hasta 4 pasajeros que priorizan discreción y puntualidad en viajes urbanos o de media distancia.',
     specs: [
       { icon: Users, label: '4 pasajeros' },
-      { icon: Leaf,  label: 'Motor híbrido eficiente' },
+      { icon: Leaf,  label: 'Motor potente y eficiente' },
       { icon: Wind,  label: 'Climatización automática' },
       { icon: Star,  label: 'Confort ejecutivo' },
     ],
@@ -275,7 +263,7 @@ export default function Fleet() {
                 <div className="flex gap-6 items-start mb-6">
 
                   {/* Specs */}
-                  <div className="flex-1 grid grid-cols-1 gap-3">
+                  <div className="flex-1 grid grid-cols-1 gap-3 lg:grid-cols-2">
                     {v.specs.map(({ icon: Icon, label }) => (
                       <div key={label}
                         className="flex items-center gap-2 bg-white/5 border border-white/8

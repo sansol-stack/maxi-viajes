@@ -1,7 +1,3 @@
-/**
- * Footer - Pie de página con logo, links, contacto y copyright
- */
-
 import { motion } from 'framer-motion'
 import { Phone, MapPin, MessageCircle } from 'lucide-react'
 import { NAV_LINKS, CONTACT, SITE } from '../constants/config'
@@ -40,14 +36,19 @@ export default function Footer() {
             </p>
             {/* Redes sociales placeholder */}
             <div className="flex gap-3 mt-6">
-              <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center 
+              {/* <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center 
                               hover:bg-secondary transition-colors cursor-pointer">
                 <span className="text-white text-sm font-bold">f</span>
-              </div>
-              <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center 
-                              hover:bg-secondary transition-colors cursor-pointer">
-                <span className="text-white text-sm font-bold">in</span>
-              </div>
+              </div> */}
+              <a
+                href="https://www.instagram.com/maxiviajess/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center 
+                           hover:bg-secondary transition-colors"
+              >
+                ig</a>
+
             </div>
           </div>
 

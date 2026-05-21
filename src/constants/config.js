@@ -33,3 +33,10 @@ export const NAV_LINKS = [
   /* { label: 'Destinos', href: '#destinos' }, */
   /* { label: 'Flota', href: '#flota' }, */
 ]
+
+
+export const RECAPTCHA = {
+  enabled: true,
+  siteKey: import.meta.env.VITE_RECAPTCHA_SITE_KEY || '',
+}
+

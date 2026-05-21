@@ -1,10 +1,3 @@
-/**
- * QuoteModal - Formulario de cotización previo al WhatsApp (Versión Premium Dark & Gold)
- *
- * Objetivo: Calificar leads y entregarle a Maxi información estructurada
- * antes de abrir el chat. Diseñado con la estética oscura y dorada de la web de Maxi Viajes.
- */
-
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -21,7 +14,7 @@ import {
   Check,
   ChevronDown,
 } from 'lucide-react'
-import { CONTACT } from '../constants/config'
+import { CONTACT, RECAPTCHA } from '../constants/config'
 
 // ── Opciones de los selects ──────────────────────────────────────────────────
 
@@ -95,7 +88,33 @@ export default function QuoteModal({ isOpen, onClose, initialMsg }) {
   const [form, setForm] = useState(INITIAL_STATE)
   const [errors, setErrors] = useState({})
   const [step, setStep] = useState(1) // 1 = form, 2 = success
+  const [isVerifying, setIsVerifying] = useState(false)
+  const [recaptchaError, setRecaptchaError] = useState(null)
   const firstInputRef = useRef(null)
+
+  // Cargar Google reCAPTCHA v3 dinámicamente si está habilitado
+  useEffect(() => {
+    if (isOpen && RECAPTCHA.enabled && RECAPTCHA.siteKey) {
+      const scriptId = 'google-recaptcha-script'
+      let script = document.getElementById(scriptId)
+
+      if (!script) {
+        script = document.createElement('script')
+        script.id = scriptId
+        script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA.siteKey}`
+        script.async = true
+        script.defer = true
+        script.onload = () => {
+          console.log('Google reCAPTCHA cargado con éxito.')
+        }
+        script.onerror = () => {
+          console.error('Error al cargar Google reCAPTCHA.')
+          setRecaptchaError('No se pudo cargar la verificación de seguridad.')
+        }
+        document.body.appendChild(script)
+      }
+    }
+  }, [isOpen])
 
   // Focus al primer campo cuando abre
   useEffect(() => {
@@ -103,6 +122,8 @@ export default function QuoteModal({ isOpen, onClose, initialMsg }) {
       setForm(INITIAL_STATE)
       setErrors({})
       setStep(1)
+      setIsVerifying(false)
+      setRecaptchaError(null)
       setTimeout(() => firstInputRef.current?.focus(), 200)
     }
   }, [isOpen])
@@ -156,6 +177,40 @@ export default function QuoteModal({ isOpen, onClose, initialMsg }) {
     e.preventDefault()
     if (!validate()) return
 
+    if (RECAPTCHA.enabled && RECAPTCHA.siteKey) {
+      setIsVerifying(true)
+      
+      if (!window.grecaptcha) {
+        setIsVerifying(false)
+        console.warn("Google reCAPTCHA no está disponible. Bypassing por fallback de seguridad y accesibilidad.")
+        proceedToWhatsApp()
+        return
+      }
+
+      window.grecaptcha.ready(() => {
+        window.grecaptcha.execute(RECAPTCHA.siteKey, { action: 'submit_quote' })
+          .then((token) => {
+            setIsVerifying(false)
+            if (token) {
+              console.log("reCAPTCHA verificado con éxito.")
+              proceedToWhatsApp()
+            } else {
+              setErrors(prev => ({ ...prev, name: 'Error en la verificación anti-bot. Por favor, intentalo de nuevo.' }))
+            }
+          })
+          .catch((err) => {
+            setIsVerifying(false)
+            console.error("Error al ejecutar reCAPTCHA:", err)
+            // Fallback: no bloqueamos al cliente final si Google tiene fallos temporales
+            proceedToWhatsApp()
+          })
+      })
+    } else {
+      proceedToWhatsApp()
+    }
+  }
+
+  function proceedToWhatsApp() {
     // Obtener labels amigables de los selects
     const passLabel = PASSENGER_OPTIONS.find((o) => o.value === form.passengers)?.label || form.passengers
     const waitLabel = WAIT_OPTIONS.find((o) => o.value === form.wait)?.label || form.wait
@@ -357,19 +412,36 @@ export default function QuoteModal({ isOpen, onClose, initialMsg }) {
                     {/* Submit */}
                     <button
                       type="submit"
+                      disabled={isVerifying}
                       className="w-full flex items-center justify-center gap-2 bg-secondary hover:bg-secondary-dark
+                                 disabled:bg-secondary/40 disabled:scale-100 disabled:cursor-not-allowed
                                  text-black font-heading font-bold text-sm py-4 px-6 rounded-2xl
                                  transition-all duration-200 hover:scale-[1.01] active:scale-[0.99]
                                  shadow-orange mt-4"
                     >
-                      <MessageCircle size={18} fill="black" />
-                      Enviar consulta por WhatsApp
-                      <ChevronRight size={18} className="ml-1" />
+                      <MessageCircle size={18} fill="black" className={isVerifying ? "animate-pulse" : ""} />
+                      {isVerifying ? 'Verificando seguridad...' : 'Enviar consulta por WhatsApp'}
+                      {!isVerifying && <ChevronRight size={18} className="ml-1" />}
                     </button>
 
                     <p className="text-center font-body text-white/30 text-xs">
                       Se abrirá tu aplicación de WhatsApp con la consulta redactada.
                     </p>
+
+                    {/* Disclaimer de Privacidad Google reCAPTCHA v3 */}
+                    {RECAPTCHA.enabled && RECAPTCHA.siteKey && (
+                      <p className="text-center font-body text-[10px] text-white/20 leading-relaxed max-w-xs mx-auto mt-2">
+                        Este sitio está protegido por reCAPTCHA y se aplican la{' '}
+                        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/40">
+                          Política de Privacidad
+                        </a>{' '}
+                        y los{' '}
+                        <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/40">
+                          Términos de Servicio
+                        </a>{' '}
+                        de Google.
+                      </p>
+                    )}
                   </motion.form>
                 ) : (
                   /* ── Pantalla de éxito ── */

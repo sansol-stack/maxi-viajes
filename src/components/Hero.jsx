@@ -19,12 +19,6 @@ import imgSheratonMobile    from '../assets/hero-scala-mobile.jpg'
 import imgFourSeasonsMobile from '../assets/hero-seats-mobile.jpg'
 import imgDazzlerMobile     from '../assets/hero-dazzler-mobile.jpg'
 
-// ── Slides — orden narrativo ─────────────────────────────────────────────────
-// 1. Campo al atardecer  → origen, naturaleza, elegancia relajada
-// 2. Four Seasons        → lujo urbano nocturno, posicionamiento top
-// 3. Sheraton            → contexto corporativo, negocios
-// 4. Nose (nocturna)     → presencia imponente, luces encendidas
-// 5. Dazzler             → versatilidad, día, ciudad
 const SLIDES = [
   {
     id: 0,
@@ -231,7 +225,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.22 }}
           >
-            Traslados premium de media y larga distancia desde San Miguel del Monte.
+            Traslados premium de media y larga distancia en Buenos Aires.
             Aeropuertos, Costa Atlántica y viajes ejecutivos — con atención personalizada
             del dueño en cada kilómetro.
           </motion.p>

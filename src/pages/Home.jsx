@@ -1,8 +1,3 @@
-/**
- * Home - Página principal de Maxi Viajes
- * Ensambla todas las secciones en orden
- */
-
 import { Helmet } from 'react-helmet-async'
 import Header from '../components/Header'
 import Hero from '../components/Hero'

@@ -1,8 +1,3 @@
-/**
- * Services - Layout oscuro tipo "proceso" con números grandes
- * Fondo dark, cards horizontales, narrativa de servicio
- */
-
 import { motion } from 'framer-motion'
 import { Plane, Waves, Briefcase, ArrowRight, MessageCircle } from 'lucide-react'
 import { openWhatsApp } from '../utils/whatsappLink'
@@ -37,7 +32,7 @@ const SERVICES = [
       'Pinamar, Cariló, Villa Gesell, Mar del Plata, Costa Esmeralda. Viaje directo, sin escalas, en total comodidad. Ideal para familias con equipaje, grupos y temporada de verano.',
     bullets: [
       'Rutas directas sin transbordos',
-      'Amplio espacio para valijas y tablas',
+      'Amplio espacio para equipaje',
       'Paradas de descanso planificadas',
     ],
     whatsappMsg: 'Hola Maxi, quiero consultar un viaje a la Costa Atlántica',

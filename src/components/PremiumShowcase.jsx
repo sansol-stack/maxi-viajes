@@ -1,25 +1,10 @@
-/**
- * PremiumShowcase - Experiencia premium Toyota Hiace
- * 
- * SETUP: Copiar los 4 archivos al proyecto:
- *   1. Este archivo → src/components/PremiumShowcase.jsx
- *   2. hiaceImages.js → src/assets/hiaceImages.js
- * 
- * Luego agregar en Home.jsx entre <Fleet /> y <CTA />:
- *   import PremiumShowcase from '../components/PremiumShowcase'
- *   <PremiumShowcase />
- */
+
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Star, Armchair, Zap, ChevronRight, ChevronLeft, ArrowRight, Sparkles, Wind } from 'lucide-react'
 import { openWhatsApp } from '../utils/whatsappLink'
 
-// ── Importar las fotos reales ────────────────────────────────────────────────
-// Opción A (recomendada en producción): poner las fotos en /public/hiace/
-//   y usar rutas "/hiace/exterior.jpg" etc.
-// Opción B (desarrollo rápido): usar el archivo hiaceImages.js generado.
-// Para este componente usamos importación directa de los assets:
 import imgExterior from '../assets/hiace-exterior.jpg'
 import imgControles from '../assets/hiace-controls.jpg'
 import imgAsientos from '../assets/hiace-seats.jpg'

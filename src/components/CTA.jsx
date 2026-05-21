@@ -1,10 +1,3 @@
-/**
- * CTA - Sección de llamada a la acción final
- * Fondo: foto real de la Toyota Hiace en Park Tower Buenos Aires
- *
- * SETUP: copiar la imagen a src/assets/cta-bg.jpg
- */
-
 import { motion } from 'framer-motion'
 import { MessageCircle, Phone } from 'lucide-react'
 import Button from './common/Button'

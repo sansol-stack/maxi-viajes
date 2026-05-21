@@ -1,8 +1,3 @@
-/**
- * FloatingWhatsApp - Botón flotante fijo de WhatsApp
- * Visible en mobile y desktop
- */
-
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageCircle, X } from 'lucide-react'
