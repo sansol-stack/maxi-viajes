@@ -25,8 +25,8 @@ function SeatDiagramHiace() {
     <g transform={`translate(${x},${y})`}>
       <rect
         x="0" y="0" width="22" height="26" rx="4"
-        fill={isDriver ? 'rgba(255,255,255,0.12)' : isVip ? 'rgba(212,175,55,0.35)' : 'rgba(255,255,255,0.25)'}
-        stroke={isDriver ? 'rgba(255,255,255,0.25)' : isVip ? 'rgba(212,175,55,0.7)' : 'rgba(255,255,255,0.45)'}
+        fill={isDriver ? 'rgba(255,255,255,0.12)' : isVip ? 'rgba(212,175,55,0.35)' : 'rgba(212,175,55,0.35)'}
+        stroke={isDriver ? 'rgba(255,255,255,0.25)' : isVip ? 'rgba(212,175,55,0.7)' : 'rgba(212,175,55,0.7)'}
         strokeWidth="1"
       />
       <rect x="2" y="2" width="18" height="14" rx="3"
@@ -275,7 +275,7 @@ export default function Fleet() {
                 <div className="flex gap-6 items-start mb-6">
 
                   {/* Specs */}
-                  <div className="flex-1 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  <div className="flex-1 grid grid-cols-1 gap-3">
                     {v.specs.map(({ icon: Icon, label }) => (
                       <div key={label}
                         className="flex items-center gap-2 bg-white/5 border border-white/8

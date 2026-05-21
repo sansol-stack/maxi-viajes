@@ -12,7 +12,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Star, Armchair, Zap, ChevronRight, ChevronLeft, ArrowRight, Sparkles } from 'lucide-react'
+import { Star, Armchair, Zap, ChevronRight, ChevronLeft, ArrowRight, Sparkles, Wind } from 'lucide-react'
 import { openWhatsApp } from '../utils/whatsappLink'
 
 // ── Importar las fotos reales ────────────────────────────────────────────────
@@ -24,6 +24,7 @@ import imgExterior from '../assets/hiace-exterior.jpg'
 import imgControles from '../assets/hiace-controls.jpg'
 import imgAsientos from '../assets/hiace-seats.jpg'
 import imgRecline from '../assets/hiace-recline.jpg'
+import imgNanoe from '../assets/hiace-nanoe.jpg'
 
 // ── Datos de cada slide ──────────────────────────────────────────────────────
 const SLIDES = [
@@ -70,6 +71,17 @@ const SLIDES = [
             'Las butacas se reclinan casi a posición horizontal para convertir cada kilómetro en descanso. Ideales para vuelos nocturnos o viajes largos a la Costa Atlántica — llegás renovado, no agotado. El espacio entre asientos garantiza libertad total de movimiento.',
         highlights: ['Reclinación casi horizontal', 'Espacio de primera clase entre filas', 'Perfecto para viajes nocturnos'],
         Icon: Sparkles,
+    },
+    {
+        id: 5,
+        src: imgNanoe,
+        tag: 'Tecnología Nanoe™',
+        subtitle: 'Aire puro en cada viaje',
+        title: 'Respirás diferente desde el primer kilómetro',
+        description:
+            'El climatizador dual con tecnología Nanoe™ emite iones de carga negativa envueltos en moléculas de agua que purifican el aire del habitáculo. El resultado es un ambiente más fresco, húmedo y libre de partículas — ideal para viajes largos donde la calidad del aire marca la diferencia.',
+        highlights: ['Ionización activa del aire interior', 'Humedad óptima en cabina', 'Climatización dual independiente por zona'],
+        Icon: Wind,
     },
 ]
 
@@ -331,11 +343,12 @@ export default function PremiumShowcase() {
             {/* ── Stats strip ── */}
             <div className="border-t border-white/5">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-2 lg:grid-cols-5 gap-8">
                         {[
                             { num: '4', unit: 'butacas VIP', label: 'Reclinación eléctrica' },
                             { num: '100%', unit: 'cuero', label: 'Tapizado premium bicolor' },
                             { num: 'A/C', unit: 'dual', label: 'Zona pasajeros independiente' },
+                            { num: 'Nanoe™', unit: 'Toyota', label: 'Purificación activa del aire' },
                             { num: '∞', unit: 'confort', label: 'Experiencia Business Class' },
                         ].map(({ num, unit, label }) => (
                             <div key={label} className="group">
