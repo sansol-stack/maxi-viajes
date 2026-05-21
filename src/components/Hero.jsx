@@ -1,14 +1,3 @@
-/**
- * Hero - Slideshow cinematográfico con 5 fotos reales de la Toyota Hiace
- *
- * SETUP: copiar los archivos a src/assets/
- *   hero-front.jpg       → frontal dorada al atardecer (campo)
- *   hero-nose.jpg        → frontal nocturna en edificio premium
- *   hero-sheraton.jpg    → trasera en puerta del Sheraton
- *   hero-fourseasons.jpg → frontal nocturna en Four Seasons BA
- *   hero-dazzler.jpg     → lateral en Dazzler by Wyndham
- */
-
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -23,6 +12,13 @@ import imgSheraton    from '../assets/hero-sheraton.jpg'
 import imgFourSeasons from '../assets/hero-fourseasons.jpg'
 import imgDazzler     from '../assets/hero-dazzler.jpg'
 
+// Imágenes verticales optimizadas para móvil
+import imgFrontMobile       from '../assets/hero-front-mobile.jpg'
+import imgNoseMobile        from '../assets/hero-nose-mobile.jpg'
+import imgSheratonMobile    from '../assets/hero-scala-mobile.jpg'
+import imgFourSeasonsMobile from '../assets/hero-seats-mobile.jpg'
+import imgDazzlerMobile     from '../assets/hero-dazzler-mobile.jpg'
+
 // ── Slides — orden narrativo ─────────────────────────────────────────────────
 // 1. Campo al atardecer  → origen, naturaleza, elegancia relajada
 // 2. Four Seasons        → lujo urbano nocturno, posicionamiento top
@@ -33,6 +29,7 @@ const SLIDES = [
   {
     id: 0,
     src: imgFront,
+    srcMobile: imgFrontMobile,
     pos: 'center 62%',
     label: 'Toyota Hiace VX Premium',
     accent: 'Elegancia que se siente desde el primer kilómetro',
@@ -40,20 +37,23 @@ const SLIDES = [
   {
     id: 1,
     src: imgFourSeasons,
+    srcMobile: imgFourSeasonsMobile,
     pos: 'center 55%',
-    label: 'Four Seasons Buenos Aires',
+    label: 'Confort Premium & Elegancia',
     accent: 'Donde los mejores hoteles confían en nosotros',
   },
   {
     id: 2,
     src: imgSheraton,
+    srcMobile: imgSheratonMobile,
     pos: 'center 45%',
-    label: 'Sheraton Buenos Aires',
+    label: 'Traslados Ejecutivos al primer nivel',
     accent: 'Traslados ejecutivos al nivel que merecés',
   },
   {
     id: 3,
     src: imgNose,
+    srcMobile: imgNoseMobile,
     pos: 'center 50%',
     label: 'Presencia premium — día y noche',
     accent: 'Siempre puntual, siempre impecable',
@@ -61,6 +61,7 @@ const SLIDES = [
   {
     id: 4,
     src: imgDazzler,
+    srcMobile: imgDazzlerMobile,
     pos: 'center 50%',
     label: 'Dazzler by Wyndham',
     accent: 'Tu vehículo premium en cada destino',
@@ -138,12 +139,15 @@ export default function Hero() {
             transition={{ duration: 1.1, ease: 'easeInOut' }}
             onAnimationComplete={() => setPrev(null)}
           >
-            <img
-              src={SLIDES[prev].src}
-              alt=""
-              className="w-full h-full object-cover"
-              style={{ objectPosition: SLIDES[prev].pos }}
-            />
+            <picture>
+              <source media="(max-width: 768px)" srcSet={SLIDES[prev].srcMobile} />
+              <img
+                src={SLIDES[prev].src}
+                alt=""
+                className="w-full h-full object-cover"
+                style={{ objectPosition: SLIDES[prev].pos }}
+              />
+            </picture>
           </motion.div>
         )}
 
@@ -158,12 +162,15 @@ export default function Hero() {
             scale:   { duration: 7,   ease: 'linear' },
           }}
         >
-          <img
-            src={SLIDES[active].src}
-            alt={SLIDES[active].label}
-            className="w-full h-full object-cover"
-            style={{ objectPosition: SLIDES[active].pos }}
-          />
+          <picture>
+            <source media="(max-width: 768px)" srcSet={SLIDES[active].srcMobile} />
+            <img
+              src={SLIDES[active].src}
+              alt={SLIDES[active].label}
+              className="w-full h-full object-cover"
+              style={{ objectPosition: SLIDES[active].pos }}
+            />
+          </picture>
         </motion.div>
 
         {/* Capas de oscurecimiento */}

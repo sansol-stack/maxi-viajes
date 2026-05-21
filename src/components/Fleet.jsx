@@ -275,7 +275,7 @@ export default function Fleet() {
                 <div className="flex gap-6 items-start mb-6">
 
                   {/* Specs */}
-                  <div className="flex-1 grid grid-cols-2 gap-2">
+                  <div className="flex-1 grid grid-cols-2 gap-3 sm:grid-cols-3">
                     {v.specs.map(({ icon: Icon, label }) => (
                       <div key={label}
                         className="flex items-center gap-2 bg-white/5 border border-white/8
