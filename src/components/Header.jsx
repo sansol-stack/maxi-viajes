@@ -3,6 +3,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, MessageCircle } from 'lucide-react'
 import { NAV_LINKS, CONTACT } from '../constants/config'
@@ -11,35 +12,23 @@ import { openWhatsApp } from '../utils/whatsappLink'
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [activeSection, setActiveSection] = useState('inicio')
+  const navigate = useNavigate()
+  const location = useLocation()
 
   /* Detectar scroll para cambiar estilo del header */
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 30)
-
-      // Detectar sección activa
-      const sections = NAV_LINKS.map((l) => l.href.replace('#', ''))
-      for (const section of [...sections].reverse()) {
-        const el = document.getElementById(section)
-        if (el && el.getBoundingClientRect().top <= 100) {
-          setActiveSection(section)
-          break
-        }
-      }
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  /* Smooth scroll al hacer click en nav */
-  function handleNavClick(href) {
+  /* Navegar a la ruta */
+  function handleNavClick(path) {
     setIsOpen(false)
-    const target = document.querySelector(href)
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
+    navigate(path)
   }
 
   return (
@@ -52,34 +41,19 @@ export default function Header() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <motion.a
-            href="#inicio"
-            onClick={(e) => { e.preventDefault(); handleNavClick('#inicio') }}
+          <motion.button
+            onClick={() => handleNavClick('/')}
             className="flex items-center gap-3 group"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            {/* Logo Anterior Comentado
-              <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center 
-                              group-hover:scale-105 transition-transform shadow-orange">
-                <span className="text-white font-heading font-black text-lg leading-none">M</span>
-              </div>
-              <div>
-                <span className="font-heading font-bold text-white text-lg leading-none block">
-                  Maxi Viajes
-                </span>
-                <span className="font-body text-white/50 text-xs">
-                  Traslados Premium
-                </span>
-              </div>
-            */}
             <img
               src="/logo-traslados-premium.png"
               alt="Maxi Viajes Logo"
               className="h-12 w-auto group-hover:scale-105 transition-transform duration-300"
             />
-          </motion.a>
+          </motion.button>
 
           {/* Nav desktop */}
           <motion.nav
@@ -89,12 +63,11 @@ export default function Header() {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             {NAV_LINKS.map((link) => {
-              const sectionId = link.href.replace('#', '')
-              const isActive = activeSection === sectionId
+              const isActive = location.pathname === link.path
               return (
                 <button
-                  key={link.href}
-                  onClick={() => handleNavClick(link.href)}
+                  key={link.path}
+                  onClick={() => handleNavClick(link.path)}
                   className={`nav-link px-4 py-2 transition-all duration-200
                     ${isActive ? 'text-secondary font-semibold' : 'text-white/70 hover:text-white'}`}
                 >
@@ -153,8 +126,8 @@ export default function Header() {
             <nav className="container mx-auto px-4 py-4 flex flex-col gap-1">
               {NAV_LINKS.map((link) => (
                 <button
-                  key={link.href}
-                  onClick={() => handleNavClick(link.href)}
+                  key={link.path}
+                  onClick={() => handleNavClick(link.path)}
                   className="text-left text-white/80 hover:text-secondary font-body font-medium 
                              py-3 px-4 rounded-xl transition-all duration-200"
                 >

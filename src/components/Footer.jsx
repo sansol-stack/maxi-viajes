@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Phone, MapPin, MessageCircle } from 'lucide-react'
 import { NAV_LINKS, CONTACT, SITE } from '../constants/config'
@@ -6,10 +7,10 @@ import { fadeIn } from '../utils/animations'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
+  const navigate = useNavigate()
 
-  function handleNavClick(href) {
-    const target = document.querySelector(href)
-    if (target) target.scrollIntoView({ behavior: 'smooth' })
+  function handleNavClick(path) {
+    navigate(path)
   }
 
   return (
@@ -65,8 +66,8 @@ export default function Footer() {
             <nav className="flex flex-col gap-2.5">
               {NAV_LINKS.map((link) => (
                 <button
-                  key={link.href}
-                  onClick={() => handleNavClick(link.href)}
+                  key={link.path}
+                  onClick={() => handleNavClick(link.path)}
                   className="text-left font-body text-white/50 hover:text-secondary text-sm 
                              transition-colors duration-200 w-fit"
                 >
@@ -128,6 +129,14 @@ export default function Footer() {
           <p className="font-body text-white/20 text-xs">
             Buenos Aires, Argentina
           </p>
+          <a
+            href="https://www.sansolweb.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-slate-600 text-sm hover:text-blue-600 transition-colors font-medium"
+          >
+            Desarrollado por <span className="font-black">SanSol Web</span>
+          </a>
         </div>
       </div>
     </footer>

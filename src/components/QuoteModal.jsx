@@ -437,7 +437,7 @@ export default function QuoteModal({ isOpen, onClose, initialMsg }) {
                         <div className="flex items-center justify-between gap-4 border-t border-white/5 pt-4">
                           <div className="flex flex-col">
                             <span className="font-body text-sm text-white/70 leading-none mb-1">Carry-on <span className="text-white/40 text-xs font-body font-normal">(0-10kg)</span></span>
-                            <span className="text-white/30 text-[10px] uppercase tracking-wider font-semibold">Equipaje de mano</span>
+                            <span className="text-white/30 text-[10px] uppercase tracking-wider font-semibold">Equipaje de bodega</span>
                           </div>
                           <div className="w-24">
                             <CustomSelect

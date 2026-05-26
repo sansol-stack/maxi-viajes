@@ -26,12 +26,11 @@ export const SITE = {
 }
 
 export const NAV_LINKS = [
-  { label: 'Inicio', href: '#inicio' },
-  { label: 'Nosotros', href: '#nosotros' },
-  { label: 'Servicios', href: '#servicios' },
-  /* { label: 'Cobertura', href: '#cobertura' }, */
-  /* { label: 'Destinos', href: '#destinos' }, */
-  /* { label: 'Flota', href: '#flota' }, */
+  { label: 'Inicio', path: '/' },
+  { label: 'Nosotros', path: '/nosotros' },
+  { label: 'Servicios', path: '/servicios' },
+  { label: 'Flota', path: '/flota' },
+  { label: 'Contacto', path: '/contacto' },
 ]
 
 
