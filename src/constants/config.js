@@ -13,7 +13,7 @@ export const CONTACT = {
   /** Ubicación de la empresa */
   location: 'Buenos Aires, Argentina',
   /** Email de contacto (opcional) */
-  email: 'maxiviajes@gmail.com',
+  email: 'presupuestosmaxiviajes@gmail.com',
 }
 
 export const SITE = {

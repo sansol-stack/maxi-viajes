@@ -168,7 +168,7 @@ export default function Hero() {
         </motion.div>
 
         {/* Capas de oscurecimiento */}
-        <div className="absolute inset-0 bg-black/55" />
+        <div className="absolute inset-0 bg-black/35" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-dark to-transparent" />
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-dark/60 to-transparent" />
@@ -220,7 +220,7 @@ export default function Hero() {
 
           {/* Subtítulo */}
           <motion.p
-            className="font-body text-white/65 text-base sm:text-lg mb-9 max-w-lg leading-relaxed"
+            className="font-body text-white/90 text-base sm:text-lg mb-9 max-w-lg leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.22 }}
@@ -279,7 +279,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.3 }}
-            className="font-heading text-white/45 text-xs tracking-widest uppercase
+            className="font-heading text-white/85 text-xs tracking-widest uppercase
                        text-right hidden sm:block max-w-[210px]"
           >
             {SLIDES[active].label}

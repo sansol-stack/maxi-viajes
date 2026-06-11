@@ -63,7 +63,7 @@ export default function Services() {
   return (
     <section
       id="servicios"
-      className="bg-dark py-20 md:py-28 overflow-hidden"
+      className="bg-dark py-20 md:py-18 overflow-hidden"
       aria-label="Nuestros servicios"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -85,7 +85,7 @@ export default function Services() {
                   Servicios
                 </span>
               </h2>
-              <p className="font-body text-white/45 text-lg mt-3 max-w-md leading-relaxed">
+              <p className="font-body text-white/70 text-lg mt-3 max-w-md leading-relaxed">
                 Tres soluciones de traslado diseñadas para distintas necesidades,
                 todas con el mismo estándar premium.
               </p>
@@ -146,10 +146,10 @@ export default function Services() {
                         {svc.badge}
                       </span>
                     </div>
-                    <p className="font-heading text-white/70 text-sm font-semibold mb-3 italic">
+                    <p className="font-heading text-white/80 text-sm font-semibold mb-3 italic">
                       "{svc.tagline}"
                     </p>
-                    <p className="font-body text-white/60 text-sm leading-relaxed">
+                    <p className="font-body text-white/70 text-sm leading-relaxed">
                       {svc.description}
                     </p>
                   </div>
@@ -183,21 +183,21 @@ export default function Services() {
         </div>
 
         {/* Footer strip */}
-        <motion.div
+        {/* <motion.div
           className="mt-12 pt-8 border-t border-white/5 flex flex-wrap items-center justify-between gap-4"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
         >
-          <p className="font-body text-white/25 text-sm">
+          <p className="font-body text-white/70 text-sm">
             Todos los servicios incluyen atención directa con el dueño · Sin intermediarios
           </p>
           <div className="flex gap-2 items-center">
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
             <span className="font-body text-white/30 text-xs">Disponible ahora</span>
           </div>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   )

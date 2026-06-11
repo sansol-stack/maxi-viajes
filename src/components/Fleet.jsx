@@ -166,7 +166,7 @@ export default function Fleet() {
   return (
     <section
       id="flota"
-      className="bg-dark py-20 md:py-28 overflow-hidden"
+      className="bg-dark py-20 md:py-18 overflow-hidden"
       aria-label="Nuestra flota de vehículos"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -255,7 +255,7 @@ export default function Fleet() {
                   {v.tagline}
                 </p>
 
-                <p className="font-body text-white/50 text-sm leading-relaxed mb-6">
+                <p className="font-body text-white/70 text-sm leading-relaxed mb-6">
                   {v.description}
                 </p>
 
@@ -332,7 +332,7 @@ export default function Fleet() {
                                 group-hover:text-white transition-colors">
                     ¿Necesitás más plazas?
                   </p>
-                  <p className="font-body text-white/35 text-sm">
+                  <p className="font-body text-white/70 text-sm">
                     Contamos con vehículos de mayor capacidad para grupos. Consultanos.
                   </p>
                 </div>

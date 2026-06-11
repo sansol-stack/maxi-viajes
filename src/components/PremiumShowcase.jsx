@@ -150,7 +150,7 @@ export default function PremiumShowcase() {
                             Business Class
                         </span>
                     </h2>
-                    <p className="font-body text-white/45 text-md mb-2 max-w-lg mx-auto leading-relaxed">
+                    <p className="font-body text-white/65 text-md mb-2 max-w-lg mx-auto leading-relaxed">
                         La Toyota Hiace redefinida con un interior que compite con los mejores
                         vehículos ejecutivos del mercado.
                     </p>

@@ -4,6 +4,7 @@ import { Phone, MapPin, MessageCircle } from 'lucide-react'
 import { NAV_LINKS, CONTACT, SITE } from '../constants/config'
 import { openWhatsApp } from '../utils/whatsappLink'
 import { fadeIn } from '../utils/animations'
+import { Link } from 'react-router-dom'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -74,7 +75,15 @@ export default function Footer() {
                   {link.label}
                 </button>
               ))}
+              <Link
+              to="/terminos"
+              className="text-left font-body text-white/50 hover:text-secondary text-sm 
+                             transition-colors duration-200 w-fit"
+            >
+              Términos y Condiciones
+            </Link>
             </nav>
+            
           </div>
 
           {/* ── Columna 3: Contacto ── */}
