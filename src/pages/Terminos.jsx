@@ -10,7 +10,8 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   ArrowLeft, Clock, AlertTriangle, CheckCircle2,
-  Plane, Users, Shield, MessageCircle
+  Plane, Users, Shield, MessageCircle, CreditCard,
+  UserCheck, Lock, XCircle
 } from 'lucide-react'
 import { openWhatsApp } from '../utils/whatsappLink'
 import { SITE, CONTACT } from '../constants/config'
@@ -81,6 +82,16 @@ function DocItem({ children, color = 'text-secondary' }) {
   return (
     <li className="flex items-start gap-2.5 mb-2.5">
       <CheckCircle2 size={14} className={`${color} flex-shrink-0 mt-0.5`} />
+      <span className="font-body text-gray-500 text-sm leading-relaxed">{children}</span>
+    </li>
+  )
+}
+
+// ── Item de lista negativo (restricciones / conducta) ────────────────────────
+function DocItemX({ children }) {
+  return (
+    <li className="flex items-start gap-2.5 mb-2.5">
+      <XCircle size={14} className="text-red-400 flex-shrink-0 mt-0.5" />
       <span className="font-body text-gray-500 text-sm leading-relaxed">{children}</span>
     </li>
   )
@@ -238,12 +249,23 @@ export default function Terminos() {
             ))}
           </div>
 
-          <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex gap-3">
+          <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex gap-3 mb-3">
             <AlertTriangle size={15} className="text-amber-600 flex-shrink-0 mt-0.5" />
             <p className="font-body text-amber-700 text-xs leading-relaxed">
               Los porcentajes se aplican sobre el <strong>valor total del traslado</strong> acordado
               al momento de la confirmación. En caso de haber abonado una seña, el cargo
               de penalidad se descontará de la misma.
+            </p>
+          </div>
+
+          <div className="bg-light border border-light-dark/20 rounded-xl px-4 py-3 flex gap-3">
+            <CreditCard size={15} className="text-secondary flex-shrink-0 mt-0.5" />
+            <p className="font-body text-gray-500 text-xs leading-relaxed">
+              <strong className="text-dark">Pagos anticipados:</strong> si el viaje fue abonado
+              con anticipación y luego surgen modificaciones sobre el presupuesto acordado
+              (cambio de horario, ruta, paradas adicionales, etc.), podrán aplicarse
+              recargos sobre el monto ya abonado, los cuales serán informados al
+              pasajero antes de confirmar el cambio.
             </p>
           </div>
         </DocSection>
@@ -297,16 +319,22 @@ export default function Terminos() {
         {/* 5. Capacidad y equipaje */}
         <DocSection icon={Users} title="5. Capacidad y equipaje" index={4}>
           <DocP>
-            La <strong className="text-dark font-medium">Toyota Hiace VX Premium</strong> tiene
-            una capacidad máxima de <strong className="text-dark font-medium">5 pasajeros</strong>.
+            La <strong className="text-dark font-medium">Toyota Hiace VX Premium</strong> admite
+            hasta <strong className="text-dark font-medium">6 pasajeros con valijas</strong>.
             El <strong className="text-dark font-medium">Toyota Corolla</strong> admite un máximo
             de <strong className="text-dark font-medium">4 pasajeros</strong>.
           </DocP>
           <DocP>
+            La capacidad real de equipaje depende del tamaño y cantidad de valijas.
+            Para grupos completos (5-6 pasajeros) con equipaje grande o múltiples
+            piezas, recomendamos <strong className="text-dark font-medium">consultar
+            previamente</strong> el espacio disponible para garantizar que todo
+            entre cómodamente.
+          </DocP>
+          <DocP>
             Por razones de seguridad vial, no se iniciará ningún traslado que exceda la
-            capacidad legal del vehículo. El equipaje debe ser informado al momento de
-            la reserva. Maxi Viajes se reserva el derecho de rechazar o ajustar el
-            servicio si el volumen de equipaje excede la capacidad del vehículo.
+            capacidad legal del vehículo. Maxi Viajes se reserva el derecho de rechazar
+            o ajustar el servicio si el volumen de equipaje excede el espacio disponible.
           </DocP>
           <DocP>
             Para grupos o necesidades de mayor capacidad, consultar disponibilidad
@@ -314,8 +342,79 @@ export default function Terminos() {
           </DocP>
         </DocSection>
 
-        {/* 6. Responsabilidades */}
-        <DocSection icon={Shield} title="6. Responsabilidades" index={5}>
+        {/* 6. Devoluciones y reembolsos */}
+        <DocSection icon={CreditCard} title="6. Devoluciones y reembolsos" index={5}>
+          <DocP>
+            En los casos en que corresponda un reembolso (cancelaciones sin cargo,
+            créditos a favor no utilizados, etc.), el importe será devuelto utilizando
+            el <strong className="text-dark font-medium">mismo medio de pago</strong> con
+            el que se realizó la transacción original.
+          </DocP>
+          <div className="bg-light border border-light-dark/20 rounded-xl px-4 py-3 flex gap-3">
+            <Clock size={15} className="text-secondary flex-shrink-0 mt-0.5" />
+            <p className="font-body text-gray-500 text-xs leading-relaxed">
+              <strong className="text-dark">Tiempos de acreditación:</strong> los reintegros
+              realizados por transferencia bancaria pueden demorar entre{' '}
+              <strong className="text-dark">3 y 30 días</strong>, dependiendo de los
+              tiempos del banco emisor/receptor y de las condiciones operativas de
+              Maxi Viajes.
+            </p>
+          </div>
+        </DocSection>
+
+        {/* 7. Conducta del pasajero */}
+        <DocSection icon={UserCheck} title="7. Conducta del pasajero" index={6}>
+          <DocP>
+            Para garantizar un viaje cómodo y seguro para todos, se solicita a los
+            pasajeros:
+          </DocP>
+          <ul className="space-y-1">
+            <DocItem>
+              Mantener una <strong className="text-dark font-medium">conducta adecuada</strong>{' '}
+              durante todo el trayecto.
+            </DocItem>
+            <DocItem>
+              <strong className="text-dark font-medium">Respetar al conductor</strong> y las
+              indicaciones brindadas para la seguridad del viaje.
+            </DocItem>
+          </ul>
+          <ul className="space-y-1 mt-1">
+            <DocItemX>
+              <strong className="text-dark font-medium">No dañar el vehículo</strong>{' '}
+              ni su equipamiento interior. Cualquier daño ocasionado por mal uso será
+              responsabilidad del pasajero y podrá facturarse de forma adicional.
+            </DocItemX>
+          </ul>
+          <DocP>
+            Maxi Viajes se reserva el derecho de finalizar un servicio sin reembolso
+            si la conducta del pasajero pone en riesgo la seguridad del conductor,
+            del vehículo o de otros ocupantes.
+          </DocP>
+        </DocSection>
+
+        {/* 8. Protección de datos */}
+        <DocSection icon={Lock} title="8. Protección de datos personales" index={7}>
+          <DocP>
+            La información proporcionada por el cliente al momento de reservar
+            (nombre, teléfono, dirección, datos de vuelo, etc.) será utilizada
+            <strong className="text-dark font-medium"> únicamente</strong> para:
+          </DocP>
+          <ul className="space-y-1">
+            <DocItem>Coordinar el servicio de traslado.</DocItem>
+            <DocItem>Confirmar reservas.</DocItem>
+            <DocItem>Comunicaciones relacionadas directamente con el traslado.</DocItem>
+          </ul>
+          <div className="bg-light border border-light-dark/20 rounded-xl px-4 py-3 flex gap-3 mt-3">
+            <Shield size={15} className="text-secondary flex-shrink-0 mt-0.5" />
+            <p className="font-body text-gray-500 text-xs leading-relaxed">
+              <strong className="text-dark">Maxi Viajes no comparte datos personales con
+              terceros</strong> bajo ninguna circunstancia, salvo requerimiento legal expreso.
+            </p>
+          </div>
+        </DocSection>
+
+        {/* 9. Responsabilidades */}
+        <DocSection icon={Shield} title="9. Responsabilidades" index={8}>
           <DocP>
             Maxi Viajes se compromete a brindar el servicio en las condiciones acordadas:
             vehículo en óptimas condiciones, conductor puntual y comunicación activa ante
@@ -336,7 +435,7 @@ export default function Terminos() {
 
         {/* CTA de contacto */}
         <motion.div
-          custom={6}
+          custom={9}
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
