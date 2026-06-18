@@ -320,13 +320,13 @@ export default function Terminos() {
         <DocSection icon={Users} title="5. Capacidad y equipaje" index={4}>
           <DocP>
             La <strong className="text-dark font-medium">Toyota Hiace VX Premium</strong> admite
-            hasta <strong className="text-dark font-medium">6 pasajeros con valijas</strong>.
+            hasta <strong className="text-dark font-medium">5 pasajeros con valijas</strong>.
             El <strong className="text-dark font-medium">Toyota Corolla</strong> admite un máximo
             de <strong className="text-dark font-medium">4 pasajeros</strong>.
           </DocP>
           <DocP>
             La capacidad real de equipaje depende del tamaño y cantidad de valijas.
-            Para grupos completos (5-6 pasajeros) con equipaje grande o múltiples
+            Para grupos completos (4-5 pasajeros) con equipaje grande o múltiples
             piezas, recomendamos <strong className="text-dark font-medium">consultar
             previamente</strong> el espacio disponible para garantizar que todo
             entre cómodamente.
