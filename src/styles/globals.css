@@ -17,6 +17,8 @@
 
   html {
     scroll-behavior: smooth;
+    /* Compensa el header fijo al saltar a una sección (#flota, etc.) */
+    scroll-padding-top: 5rem;
   }
 
   body {

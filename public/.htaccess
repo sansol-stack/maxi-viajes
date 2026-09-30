@@ -1,0 +1,91 @@
+# ════════════════════════════════════════════════════════════
+# Maxi Viajes - Configuración Apache / Hostinger
+# Vive en public/ para que Vite lo copie a dist/ en cada build.
+# ════════════════════════════════════════════════════════════
+
+# ============================================
+# SEGURIDAD — Headers HTTP
+# ============================================
+
+<IfModule mod_headers.c>
+
+  # Fuerza HTTPS y previene downgrade attacks
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+  # Previene clickjacking — el sitio no puede cargarse en un iframe externo
+  Header always set X-Frame-Options "SAMEORIGIN"
+
+  # Previene MIME sniffing — el browser respeta el content-type declarado
+  Header always set X-Content-Type-Options "nosniff"
+
+  # Controla información enviada al hacer clic en links externos
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # Limita acceso a APIs del browser que no usás
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+
+  # Aísla el contexto de navegación — protección contra Spectre/Meltdown
+  Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
+
+  # Permite cargar recursos externos necesarios (Google Fonts, etc.)
+  Header always set Cross-Origin-Embedder-Policy "unsafe-none"
+
+  # Recursos propios solo cargables desde mismo origen o sitio
+  Header always set Cross-Origin-Resource-Policy "same-site"
+
+</IfModule>
+
+# ============================================
+# REDIRECCIONES Y SPA — React Router
+# ============================================
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # 1. Sin www → www (y a HTTPS en el mismo salto)
+  RewriteCond %{HTTP_HOST} ^maxiviajestraslados\.com\.ar$ [NC]
+  RewriteRule ^(.*)$ https://www.maxiviajestraslados.com.ar/$1 [R=301,L]
+
+  # 2. Forzar HTTPS
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+  # 3. Rutas viejas → secciones de la one-page
+  # /flota → /#flota (NE evita que el # se codifique como %23)
+  RewriteRule ^(nosotros|servicios|flota|contacto)/?$ /#$1 [R=301,NE,L]
+
+  # 4. SPA fallback — si no es un archivo ni carpeta real, servir index.html
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# ============================================
+# PERFORMANCE — Cache de assets estáticos
+# ============================================
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpg "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType application/json "access plus 0 seconds"
+</IfModule>
+
+# ============================================
+# COMPRESIÓN — Gzip
+# ============================================
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE application/javascript
+  AddOutputFilterByType DEFLATE application/json
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>

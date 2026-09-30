@@ -7,6 +7,7 @@
 
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { motion } from 'framer-motion'
 import {
   ArrowLeft, Clock, AlertTriangle, CheckCircle2,
@@ -105,6 +106,22 @@ export default function Terminos() {
 
   return (
     <div className="min-h-screen bg-light">
+      <Helmet>
+        {/* SEO básico */}
+        <title>Términos y Cancelaciones - Maxi Viajes | Traslados Premium Buenos Aires</title>
+        <meta
+          name="description"
+          content="Términos y condiciones del servicio de Maxi Viajes: políticas de cancelación, reservas, equipaje y pasajeros."
+        />
+        <link rel="canonical" href={`${SITE.url}/terminos`} />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Términos y Cancelaciones - Maxi Viajes" />
+        <meta property="og:description" content="Políticas de cancelación, reservas, equipaje y pasajeros de Maxi Viajes." />
+        <meta property="og:locale" content="es_AR" />
+        <meta property="og:site_name" content={SITE.name} />
+      </Helmet>
 
       {/* ── Header de la página ── */}
       <div className="bg-dark border-b border-white/5">

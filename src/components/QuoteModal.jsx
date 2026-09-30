@@ -9,6 +9,7 @@ import {
   Users,
   Clock,
   Luggage,
+  Hourglass,
   ChevronRight,
   ArrowRight,
   Check,
@@ -54,6 +55,7 @@ function buildWhatsAppMessage(data, initialMsg) {
     ``,
     `- *Nombre:* ${data.name}`,
     `- *Fecha del viaje:* ${data.date}`,
+    `- *Horario de búsqueda:* ${data.time} hs`,
     `- *Desde:* ${data.from}`,
     `- *Hasta:* ${data.to}`,
     `- *Pasajeros:* ${data.passengers}`,
@@ -78,6 +80,7 @@ function buildWhatsAppMessage(data, initialMsg) {
 const INITIAL_STATE = {
   name: '',
   date: '',
+  time: '',
   from: '',
   to: '',
   passengers: '',
@@ -90,16 +93,27 @@ const INITIAL_STATE = {
 // ── Componente Principal ──────────────────────────────────────────────────────
 
 export default function QuoteModal({ isOpen, onClose, initialMsg }) {
+  // El contenido se monta solo al abrir: así el estado del formulario
+  // arranca limpio en cada apertura, sin resetearlo desde un efecto.
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <QuoteModalContent key="quote-modal" onClose={onClose} initialMsg={initialMsg} />
+      )}
+    </AnimatePresence>
+  )
+}
+
+function QuoteModalContent({ onClose, initialMsg }) {
   const [form, setForm] = useState(INITIAL_STATE)
   const [errors, setErrors] = useState({})
   const [step, setStep] = useState(1) // 1 = form, 2 = success
   const [isVerifying, setIsVerifying] = useState(false)
-  const [recaptchaError, setRecaptchaError] = useState(null)
   const firstInputRef = useRef(null)
 
   // Cargar Google reCAPTCHA v3 dinámicamente si está habilitado
   useEffect(() => {
-    if (isOpen && RECAPTCHA.enabled && RECAPTCHA.siteKey) {
+    if (RECAPTCHA.enabled && RECAPTCHA.siteKey) {
       const scriptId = 'google-recaptcha-script'
       let script = document.getElementById(scriptId)
 
@@ -113,25 +127,19 @@ export default function QuoteModal({ isOpen, onClose, initialMsg }) {
           console.log('Google reCAPTCHA cargado con éxito.')
         }
         script.onerror = () => {
+          // Sin reCAPTCHA, handleSubmit deja pasar igual a WhatsApp
           console.error('Error al cargar Google reCAPTCHA.')
-          setRecaptchaError('No se pudo cargar la verificación de seguridad.')
         }
         document.body.appendChild(script)
       }
     }
-  }, [isOpen])
+  }, [])
 
   // Focus al primer campo cuando abre
   useEffect(() => {
-    if (isOpen) {
-      setForm(INITIAL_STATE)
-      setErrors({})
-      setStep(1)
-      setIsVerifying(false)
-      setRecaptchaError(null)
-      setTimeout(() => firstInputRef.current?.focus(), 200)
-    }
-  }, [isOpen])
+    const timer = setTimeout(() => firstInputRef.current?.focus(), 200)
+    return () => clearTimeout(timer)
+  }, [])
 
   // Cerrar con Escape
   useEffect(() => {
@@ -144,15 +152,11 @@ export default function QuoteModal({ isOpen, onClose, initialMsg }) {
 
   // Bloquear scroll del body cuando el modal está abierto
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
+    document.body.style.overflow = 'hidden'
     return () => {
       document.body.style.overflow = ''
     }
-  }, [isOpen])
+  }, [])
 
   function handleChange(e) {
     const { name, value } = e.target
@@ -169,6 +173,7 @@ export default function QuoteModal({ isOpen, onClose, initialMsg }) {
     const newErrors = {}
     if (!form.name.trim()) newErrors.name = 'Ingresá tu nombre'
     if (!form.date) newErrors.date = 'Seleccioná la fecha del viaje'
+    if (!form.time) newErrors.time = 'Indicá el horario de búsqueda'
     if (!form.from.trim()) newErrors.from = 'Indicá el punto de origen'
     if (!form.to.trim()) newErrors.to = 'Indicá el destino'
     if (!form.passengers) newErrors.passengers = 'Seleccioná la cantidad de pasajeros'
@@ -229,6 +234,7 @@ export default function QuoteModal({ isOpen, onClose, initialMsg }) {
       {
         name: form.name,
         date: formatDate(form.date),
+        time: form.time,
         from: form.from,
         to: form.to,
         passengers: passLabel,
@@ -256,102 +262,102 @@ export default function QuoteModal({ isOpen, onClose, initialMsg }) {
   const today = new Date().toISOString().split('T')[0]
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            key="backdrop"
-            className="fixed inset-0 z-[60] bg-black/90 backdrop-blur-md"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            aria-hidden="true"
-          />
+    <>
+      {/* Backdrop */}
+      <motion.div
+        key="backdrop"
+        className="fixed inset-0 z-[60] bg-black/90 backdrop-blur-md"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+        aria-hidden="true"
+      />
 
-          {/* Modal */}
-          <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 overflow-y-auto">
-            <motion.div
-              key="modal"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="modal-title"
-              className="relative bg-primary-light border border-white/10 rounded-3xl shadow-card w-full max-w-lg overflow-hidden my-8"
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+      {/* Modal */}
+      <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 overflow-y-auto">
+        <motion.div
+          key="modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-title"
+          className="relative bg-primary-light border border-white/10 rounded-3xl shadow-card w-full max-w-lg overflow-hidden my-8"
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        >
+          {/* ── Header ── */}
+          <div className="relative bg-gradient-to-b from-primary-light to-primary border-b border-white/10 px-6 pt-7 pb-6">
+            <button
+              onClick={onClose}
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:bg-white/10
+                         flex items-center justify-center text-white transition-colors"
+              aria-label="Cerrar"
             >
-              {/* ── Header ── */}
-              <div className="relative bg-gradient-to-b from-primary-light to-primary border-b border-white/10 px-6 pt-7 pb-6">
-                <button
-                  onClick={onClose}
-                  className="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:bg-white/10
-                             flex items-center justify-center text-white transition-colors"
-                  aria-label="Cerrar"
-                >
-                  <X size={16} />
-                </button>
+              <X size={16} />
+            </button>
 
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center shadow-orange flex-shrink-0">
-                    <MessageCircle size={20} className="text-black" />
-                  </div>
-                  <div>
-                    <h2 id="modal-title" className="font-heading text-white text-lg font-bold leading-tight uppercase tracking-wider">
-                      Cotizá tu viaje
-                    </h2>
-                    <p className="font-body text-white/50 text-xs">
-                      Completá los datos y te respondemos por WhatsApp al instante
-                    </p>
-                  </div>
-                </div>
-
-                {/* Barra de progreso */}
-                {step === 1 && (
-                  <div className="mt-4 h-1 bg-white/5 rounded-full overflow-hidden">
-                    <motion.div
-                      className="h-full bg-secondary rounded-full"
-                      animate={{
-                        width: `${Math.min(
-                          100,
-                          (Object.values(form).filter(Boolean).length / 9) * 100
-                        )}%`,
-                      }}
-                      transition={{ duration: 0.3 }}
-                    />
-                  </div>
-                )}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center shadow-orange flex-shrink-0">
+                <MessageCircle size={20} className="text-black" />
               </div>
+              <div>
+                <h2 id="modal-title" className="font-heading text-white text-lg font-bold leading-tight uppercase tracking-wider">
+                  Cotizá tu viaje
+                </h2>
+                <p className="font-body text-white/50 text-xs">
+                  Completá los datos y te respondemos por WhatsApp al instante
+                </p>
+              </div>
+            </div>
 
-              {/* ── Cuerpo ── */}
-              <AnimatePresence mode="wait">
-                {step === 1 ? (
-                  <motion.form
-                    key="form"
-                    onSubmit={handleSubmit}
-                    className="px-6 py-6 space-y-4 max-h-[70vh] overflow-y-auto custom-scrollbar"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    noValidate
-                  >
-                    {/* Nombre */}
-                    <FieldGroup icon={User} label="Nombre completo" error={errors.name} required>
-                      <input
-                        ref={firstInputRef}
-                        type="text"
-                        name="name"
-                        value={form.name}
-                        onChange={handleChange}
-                        placeholder="Ej: Juan García"
-                        className={inputClass(errors.name)}
-                        autoComplete="name"
-                      />
-                    </FieldGroup>
+            {/* Barra de progreso */}
+            {step === 1 && (
+              <div className="mt-4 h-1 bg-white/5 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full bg-secondary rounded-full"
+                  animate={{
+                    width: `${Math.min(
+                      100,
+                      (Object.values(form).filter(Boolean).length / Object.keys(INITIAL_STATE).length) * 100
+                    )}%`,
+                  }}
+                  transition={{ duration: 0.3 }}
+                />
+              </div>
+            )}
+          </div>
 
-                    {/* Fecha */}
+          {/* ── Cuerpo ── */}
+          <AnimatePresence mode="wait">
+            {step === 1 ? (
+              <motion.form
+                key="form"
+                onSubmit={handleSubmit}
+                className="px-6 py-6 space-y-4 max-h-[70vh] overflow-y-auto custom-scrollbar"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                noValidate
+              >
+                {/* Nombre */}
+                <FieldGroup icon={User} label="Nombre completo" error={errors.name} required>
+                  <input
+                    ref={firstInputRef}
+                    type="text"
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    placeholder="Ej: Juan García"
+                    className={inputClass(errors.name)}
+                    autoComplete="name"
+                  />
+                </FieldGroup>
+
+                {/* Fecha + Horario (2 columnas) */}
+                <div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <FieldGroup icon={Calendar} label="Fecha del viaje" error={errors.date} required>
                       <input
                         type="date"
@@ -362,181 +368,193 @@ export default function QuoteModal({ isOpen, onClose, initialMsg }) {
                         className={inputClass(errors.date)}
                       />
                     </FieldGroup>
+                    <FieldGroup icon={Clock} label="Horario de búsqueda" error={errors.time} required>
+                      <input
+                        type="time"
+                        name="time"
+                        value={form.time}
+                        onChange={handleChange}
+                        className={inputClass(errors.time)}
+                      />
+                    </FieldGroup>
+                  </div>
+                  <p className="mt-1.5 font-body text-white/30 text-xs">
+                    ¿A qué hora te buscamos? Si vas al aeropuerto, te recomendamos 2 h antes del vuelo en cabotaje y 3 h en internacionales.
+                  </p>
+                </div>
 
-                    {/* Origen → Destino (2 columnas) */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <FieldGroup icon={MapPin} label="Desde" error={errors.from} required>
-                        <input
-                          type="text"
-                          name="from"
-                          value={form.from}
-                          onChange={handleChange}
-                          placeholder="CABA"
-                          className={inputClass(errors.from)}
-                        />
-                      </FieldGroup>
-                      <FieldGroup icon={ArrowRight} label="Hasta" error={errors.to} required>
-                        <input
-                          type="text"
-                          name="to"
-                          value={form.to}
-                          onChange={handleChange}
-                          placeholder="Ej: Monte o Ezeiza"
-                          className={inputClass(errors.to)}
-                        />
-                      </FieldGroup>
-                    </div>
-
-                    {/* Dropdowns Diseñados */}
-                    <CustomSelect
-                      icon={Users}
-                      label="Cantidad de pasajeros"
-                      value={form.passengers}
-                      options={PASSENGER_OPTIONS}
-                      onChange={(val) => handleSelectChange('passengers', val)}
-                      error={errors.passengers}
-                      placeholder="Seleccioná cantidad"
+                {/* Origen → Destino (2 columnas) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <FieldGroup icon={MapPin} label="Desde" error={errors.from} required>
+                    <input
+                      type="text"
+                      name="from"
+                      value={form.from}
+                      onChange={handleChange}
+                      placeholder="CABA"
+                      className={inputClass(errors.from)}
                     />
-
-                    <CustomSelect
-                      icon={Clock}
-                      label="¿Necesitás que Maxi espere?"
-                      value={form.wait}
-                      options={WAIT_OPTIONS}
-                      onChange={(val) => handleSelectChange('wait', val)}
-                      error={errors.wait}
-                      placeholder="Seleccioná opción"
+                  </FieldGroup>
+                  <FieldGroup icon={ArrowRight} label="Hasta" error={errors.to} required>
+                    <input
+                      type="text"
+                      name="to"
+                      value={form.to}
+                      onChange={handleChange}
+                      placeholder="Ej: Monte o Ezeiza"
+                      className={inputClass(errors.to)}
                     />
+                  </FieldGroup>
+                </div>
 
-                    {/* Sección de Equipaje Detallado */}
-                    <div className="space-y-3 pt-2">
-                      <label className="flex items-center gap-1.5 font-heading text-white/80 text-xs font-semibold mb-1.5 uppercase tracking-wide">
-                        <Luggage size={13} className="text-secondary flex-shrink-0" />
-                        Equipaje (Cantidad por tipo)
-                      </label>
+                {/* Dropdowns Diseñados */}
+                <CustomSelect
+                  icon={Users}
+                  label="Cantidad de pasajeros"
+                  value={form.passengers}
+                  options={PASSENGER_OPTIONS}
+                  onChange={(val) => handleSelectChange('passengers', val)}
+                  error={errors.passengers}
+                  placeholder="Seleccioná cantidad"
+                />
 
-                      <div className="space-y-4 bg-black/20 p-4 rounded-3xl border border-white/5">
-                        {/* Artículo Personal */}
-                        <div className="flex items-center justify-between gap-4">
-                          <div className="flex flex-col">
-                            <span className="font-body text-sm text-white/70 leading-none mb-1">Artículo Personal</span>
-                            <span className="text-white/30 text-[10px] uppercase tracking-wider font-semibold">Mochila o bolso</span>
-                          </div>
-                          <div className="w-24">
-                            <CustomSelect
-                              value={form.luggagePersonal}
-                              options={LUGGAGE_QTY_OPTIONS}
-                              onChange={(val) => handleSelectChange('luggagePersonal', val)}
-                              placeholder="0"
-                              noLabel
-                            />
-                          </div>
-                        </div>
+                <CustomSelect
+                  icon={Hourglass}
+                  label="¿Necesitás que Maxi espere?"
+                  value={form.wait}
+                  options={WAIT_OPTIONS}
+                  onChange={(val) => handleSelectChange('wait', val)}
+                  error={errors.wait}
+                  placeholder="Seleccioná opción"
+                />
 
-                        {/* Carry-on */}
-                        <div className="flex items-center justify-between gap-4 border-t border-white/5 pt-4">
-                          <div className="flex flex-col">
-                            <span className="font-body text-sm text-white/70 leading-none mb-1">Carry-on <span className="text-white/40 text-xs font-body font-normal">(0-10kg)</span></span>
-                            <span className="text-white/30 text-[10px] uppercase tracking-wider font-semibold">Equipaje de bodega</span>
-                          </div>
-                          <div className="w-24">
-                            <CustomSelect
-                              value={form.luggageCarryOn}
-                              options={LUGGAGE_QTY_OPTIONS}
-                              onChange={(val) => handleSelectChange('luggageCarryOn', val)}
-                              placeholder="0"
-                              noLabel
-                            />
-                          </div>
-                        </div>
+                {/* Sección de Equipaje Detallado */}
+                <div className="space-y-3 pt-2">
+                  <label className="flex items-center gap-1.5 font-heading text-white/80 text-xs font-semibold mb-1.5 uppercase tracking-wide">
+                    <Luggage size={13} className="text-secondary flex-shrink-0" />
+                    Equipaje (Cantidad por tipo)
+                  </label>
 
-                        {/* Valija Estándar */}
-                        <div className="flex items-center justify-between gap-4 border-t border-white/5 pt-4">
-                          <div className="flex flex-col">
-                            <span className="font-body text-sm text-white/70 leading-none mb-1">Valija <span className="text-white/40 text-xs font-body font-normal">(10-23kg)</span></span>
-                            <span className="text-white/30 text-[10px] uppercase tracking-wider font-semibold">Equipaje de bodega</span>
-                          </div>
-                          <div className="w-24">
-                            <CustomSelect
-                              value={form.luggageStandard}
-                              options={LUGGAGE_QTY_OPTIONS}
-                              onChange={(val) => handleSelectChange('luggageStandard', val)}
-                              placeholder="0"
-                              noLabel
-                            />
-                          </div>
-                        </div>
+                  <div className="space-y-4 bg-black/20 p-4 rounded-3xl border border-white/5">
+                    {/* Artículo Personal */}
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex flex-col">
+                        <span className="font-body text-sm text-white/70 leading-none mb-1">Artículo Personal</span>
+                        <span className="text-white/30 text-[10px] uppercase tracking-wider font-semibold">Mochila o bolso</span>
+                      </div>
+                      <div className="w-24">
+                        <CustomSelect
+                          value={form.luggagePersonal}
+                          options={LUGGAGE_QTY_OPTIONS}
+                          onChange={(val) => handleSelectChange('luggagePersonal', val)}
+                          placeholder="0"
+                          noLabel
+                        />
                       </div>
                     </div>
 
-                    {/* Submit */}
-                    <button
-                      type="submit"
-                      disabled={isVerifying}
-                      className="w-full flex items-center justify-center gap-2 bg-secondary hover:bg-secondary-dark
-                                 disabled:bg-secondary/40 disabled:scale-100 disabled:cursor-not-allowed
-                                 text-black font-heading font-bold text-sm py-4 px-6 rounded-2xl
-                                 transition-all duration-200 hover:scale-[1.01] active:scale-[0.99]
-                                 shadow-orange mt-4"
-                    >
-                      <MessageCircle size={18} fill="black" className={isVerifying ? "animate-pulse" : ""} />
-                      {isVerifying ? 'Verificando seguridad...' : 'Enviar consulta por WhatsApp'}
-                      {!isVerifying && <ChevronRight size={18} className="ml-1" />}
-                    </button>
-
-                    <p className="text-center font-body text-white/30 text-xs">
-                      Se abrirá tu aplicación de WhatsApp con la consulta redactada.
-                    </p>
-
-                    {/* Disclaimer de Privacidad Google reCAPTCHA v3 */}
-                    {RECAPTCHA.enabled && RECAPTCHA.siteKey && (
-                      <p className="text-center font-body text-[10px] text-white/20 leading-relaxed max-w-xs mx-auto mt-2">
-                        Este sitio está protegido por reCAPTCHA y se aplican la{' '}
-                        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/40">
-                          Política de Privacidad
-                        </a>{' '}
-                        y los{' '}
-                        <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/40">
-                          Términos de Servicio
-                        </a>{' '}
-                        de Google.
-                      </p>
-                    )}
-                  </motion.form>
-                ) : (
-                  /* ── Pantalla de éxito ── */
-                  <motion.div
-                    key="success"
-                    className="px-6 py-12 text-center bg-primary-light"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ type: 'spring' }}
-                  >
-                    <div className="w-20 h-20 bg-secondary/10 border border-secondary/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <MessageCircle size={36} className="text-secondary" />
+                    {/* Carry-on */}
+                    <div className="flex items-center justify-between gap-4 border-t border-white/5 pt-4">
+                      <div className="flex flex-col">
+                        <span className="font-body text-sm text-white/70 leading-none mb-1">Carry-on <span className="text-white/40 text-xs font-body font-normal">(0-10kg)</span></span>
+                        <span className="text-white/30 text-[10px] uppercase tracking-wider font-semibold">Equipaje de bodega</span>
+                      </div>
+                      <div className="w-24">
+                        <CustomSelect
+                          value={form.luggageCarryOn}
+                          options={LUGGAGE_QTY_OPTIONS}
+                          onChange={(val) => handleSelectChange('luggageCarryOn', val)}
+                          placeholder="0"
+                          noLabel
+                        />
+                      </div>
                     </div>
-                    <h3 className="font-heading text-white text-2xl font-bold mb-3 uppercase tracking-wider">
-                      ¡WhatsApp Listo!
-                    </h3>
-                    <p className="font-body text-white/60 text-sm leading-relaxed mb-8 max-w-xs mx-auto">
-                      Se abrió WhatsApp con tu mensaje formateado.
-                      Solo presioná <strong>Enviar</strong> y Maxi te contestará a la brevedad.
-                    </p>
-                    <button
-                      onClick={onClose}
-                      className="font-heading text-secondary text-sm font-semibold hover:text-white
-                                 transition-colors underline underline-offset-4 decoration-secondary/40"
-                    >
-                      Cerrar ventana
-                    </button>
-                  </motion.div>
+
+                    {/* Valija Estándar */}
+                    <div className="flex items-center justify-between gap-4 border-t border-white/5 pt-4">
+                      <div className="flex flex-col">
+                        <span className="font-body text-sm text-white/70 leading-none mb-1">Valija <span className="text-white/40 text-xs font-body font-normal">(10-23kg)</span></span>
+                        <span className="text-white/30 text-[10px] uppercase tracking-wider font-semibold">Equipaje de bodega</span>
+                      </div>
+                      <div className="w-24">
+                        <CustomSelect
+                          value={form.luggageStandard}
+                          options={LUGGAGE_QTY_OPTIONS}
+                          onChange={(val) => handleSelectChange('luggageStandard', val)}
+                          placeholder="0"
+                          noLabel
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Submit */}
+                <button
+                  type="submit"
+                  disabled={isVerifying}
+                  className="w-full flex items-center justify-center gap-2 bg-secondary hover:bg-secondary-dark
+                             disabled:bg-secondary/40 disabled:scale-100 disabled:cursor-not-allowed
+                             text-black font-heading font-bold text-sm py-4 px-6 rounded-2xl
+                             transition-all duration-200 hover:scale-[1.01] active:scale-[0.99]
+                             shadow-orange mt-4"
+                >
+                  <MessageCircle size={18} fill="black" className={isVerifying ? "animate-pulse" : ""} />
+                  {isVerifying ? 'Verificando seguridad...' : 'Enviar consulta por WhatsApp'}
+                  {!isVerifying && <ChevronRight size={18} className="ml-1" />}
+                </button>
+
+                <p className="text-center font-body text-white/30 text-xs">
+                  Se abrirá tu aplicación de WhatsApp con la consulta redactada.
+                </p>
+
+                {/* Disclaimer de Privacidad Google reCAPTCHA v3 */}
+                {RECAPTCHA.enabled && RECAPTCHA.siteKey && (
+                  <p className="text-center font-body text-[10px] text-white/20 leading-relaxed max-w-xs mx-auto mt-2">
+                    Este sitio está protegido por reCAPTCHA y se aplican la{' '}
+                    <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/40">
+                      Política de Privacidad
+                    </a>{' '}
+                    y los{' '}
+                    <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/40">
+                      Términos de Servicio
+                    </a>{' '}
+                    de Google.
+                  </p>
                 )}
-              </AnimatePresence>
-            </motion.div>
-          </div>
-        </>
-      )}
-    </AnimatePresence>
+              </motion.form>
+            ) : (
+              /* ── Pantalla de éxito ── */
+              <motion.div
+                key="success"
+                className="px-6 py-12 text-center bg-primary-light"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: 'spring' }}
+              >
+                <div className="w-20 h-20 bg-secondary/10 border border-secondary/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <MessageCircle size={36} className="text-secondary" />
+                </div>
+                <h3 className="font-heading text-white text-2xl font-bold mb-3 uppercase tracking-wider">
+                  ¡WhatsApp Listo!
+                </h3>
+                <p className="font-body text-white/60 text-sm leading-relaxed mb-8 max-w-xs mx-auto">
+                  Se abrió WhatsApp con tu mensaje formateado.
+                  Solo presioná <strong>Enviar</strong> y Maxi te contestará a la brevedad.
+                </p>
+                <button
+                  onClick={onClose}
+                  className="font-heading text-secondary text-sm font-semibold hover:text-white
+                             transition-colors underline underline-offset-4 decoration-secondary/40"
+                >
+                  Cerrar ventana
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </div>
+    </>
   )
 }
 

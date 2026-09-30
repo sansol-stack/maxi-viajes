@@ -3,17 +3,18 @@
  */
 
 import { useState, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, MessageCircle } from 'lucide-react'
-import { NAV_LINKS, CONTACT } from '../constants/config'
+import { NAV_LINKS } from '../constants/config'
 import { openWhatsApp } from '../utils/whatsappLink'
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const navigate = useNavigate()
+  const [activeSection, setActiveSection] = useState('inicio')
   const location = useLocation()
+  const isHome = location.pathname === '/'
 
   /* Detectar scroll para cambiar estilo del header */
   useEffect(() => {
@@ -25,11 +26,25 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  /* Navegar a la ruta */
-  function handleNavClick(path) {
-    setIsOpen(false)
-    navigate(path)
-  }
+  /* Marcar en el menú la sección visible (solo en la one-page de Inicio) */
+  useEffect(() => {
+    if (!isHome) return
+    const sections = NAV_LINKS
+      .map((link) => document.getElementById(link.id))
+      .filter(Boolean)
+
+    // Una sección cuenta como "activa" cuando cruza la franja central de la pantalla
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id)
+        })
+      },
+      { rootMargin: '-40% 0px -55% 0px' }
+    )
+    sections.forEach((section) => observer.observe(section))
+    return () => observer.disconnect()
+  }, [isHome])
 
   return (
     <header
@@ -41,19 +56,23 @@ export default function Header() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <motion.button
-            onClick={() => handleNavClick('/')}
-            className="flex items-center gap-3 group"
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <img
-              src="/logo-traslados-premium.png"
-              alt="Maxi Viajes Logo"
-              className="h-12 w-auto group-hover:scale-105 transition-transform duration-300"
-            />
-          </motion.button>
+            <Link
+              to="/"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-3 group"
+            >
+              <img
+                src="/logo-traslados-premium.png"
+                alt="Maxi Viajes Logo"
+                className="h-12 w-auto group-hover:scale-105 transition-transform duration-300"
+              />
+            </Link>
+          </motion.div>
 
           {/* Nav desktop */}
           <motion.nav
@@ -63,11 +82,11 @@ export default function Header() {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             {NAV_LINKS.map((link) => {
-              const isActive = location.pathname === link.path
+              const isActive = isHome && activeSection === link.id
               return (
-                <button
-                  key={link.path}
-                  onClick={() => handleNavClick(link.path)}
+                <Link
+                  key={link.id}
+                  to={link.path}
                   className={`nav-link px-4 py-2 transition-all duration-200
                     ${isActive ? 'text-secondary font-semibold' : 'text-white/70 hover:text-white'}`}
                 >
@@ -78,7 +97,7 @@ export default function Header() {
                       layoutId="activeNav"
                     />
                   )}
-                </button>
+                </Link>
               )
             })}
           </motion.nav>
@@ -125,14 +144,15 @@ export default function Header() {
           >
             <nav className="container mx-auto px-4 py-4 flex flex-col gap-1">
               {NAV_LINKS.map((link) => (
-                <button
-                  key={link.path}
-                  onClick={() => handleNavClick(link.path)}
-                  className="text-left text-white/80 hover:text-secondary font-body font-medium 
+                <Link
+                  key={link.id}
+                  to={link.path}
+                  onClick={() => setIsOpen(false)}
+                  className="text-left text-white/80 hover:text-secondary font-body font-medium
                              py-3 px-4 rounded-xl transition-all duration-200"
                 >
                   {link.label}
-                </button>
+                </Link>
               ))}
               <button
                 onClick={() => { openWhatsApp(); setIsOpen(false) }}

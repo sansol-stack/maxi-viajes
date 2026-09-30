@@ -1,4 +1,10 @@
 {
+  "redirects": [
+    { "source": "/nosotros", "destination": "/#nosotros", "permanent": true },
+    { "source": "/servicios", "destination": "/#servicios", "permanent": true },
+    { "source": "/flota", "destination": "/#flota", "permanent": true },
+    { "source": "/contacto", "destination": "/#contacto", "permanent": true }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",

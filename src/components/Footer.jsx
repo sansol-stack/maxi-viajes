@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Phone, MapPin, MessageCircle } from 'lucide-react'
 import { NAV_LINKS, CONTACT, SITE } from '../constants/config'
@@ -8,11 +7,6 @@ import { Link } from 'react-router-dom'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
-  const navigate = useNavigate()
-
-  function handleNavClick(path) {
-    navigate(path)
-  }
 
   return (
     <footer className="bg-dark text-white">
@@ -66,14 +60,14 @@ export default function Footer() {
             </h3>
             <nav className="flex flex-col gap-2.5">
               {NAV_LINKS.map((link) => (
-                <button
-                  key={link.path}
-                  onClick={() => handleNavClick(link.path)}
-                  className="text-left font-body text-white/50 hover:text-secondary text-sm 
+                <Link
+                  key={link.id}
+                  to={link.path}
+                  className="text-left font-body text-white/50 hover:text-secondary text-sm
                              transition-colors duration-200 w-fit"
                 >
                   {link.label}
-                </button>
+                </Link>
               ))}
               <Link
               to="/terminos"

@@ -18,6 +18,8 @@ export const CONTACT = {
 
 export const SITE = {
   name: 'Maxi Viajes',
+  /** Dominio oficial (con www, sin barra final) — usado en canonical y metadatos */
+  url: 'https://www.maxiviajestraslados.com.ar',
   tagline: 'Traslados Premium desde Buenos Aires',
   description:
     'Servicio de traslados premium de media y larga distancia desde Buenos Aires. Aeropuertos, Costa Atlántica y viajes ejecutivos.',
@@ -25,12 +27,13 @@ export const SITE = {
   since: 2018,
 }
 
+/** Secciones de la one-page de Inicio (id = id de la <section>) */
 export const NAV_LINKS = [
-  { label: 'Inicio', path: '/' },
-  { label: 'Nosotros', path: '/nosotros' },
-  { label: 'Servicios', path: '/servicios' },
-  { label: 'Flota', path: '/flota' },
-  { label: 'Contacto', path: '/contacto' },
+  { label: 'Inicio', id: 'inicio', path: '/' },
+  { label: 'Nosotros', id: 'nosotros', path: '/#nosotros' },
+  { label: 'Servicios', id: 'servicios', path: '/#servicios' },
+  { label: 'Flota', id: 'flota', path: '/#flota' },
+  { label: 'Contacto', id: 'contacto', path: '/#contacto' },
 ]
 
 

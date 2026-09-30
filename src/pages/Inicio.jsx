@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import Header from '../components/Header'
 import Hero from '../components/Hero'
@@ -11,6 +13,20 @@ import FloatingWhatsApp from '../components/FloatingWhatsApp'
 import { SITE, CONTACT } from '../constants/config'
 
 export default function Inicio() {
+  const { hash, key } = useLocation()
+
+  // Scroll a la sección del hash (/#flota) en cada navegación del menú.
+  // `key` cambia en cada clic, así que un segundo clic al mismo link también scrollea.
+  useEffect(() => {
+    const section = hash && document.getElementById(hash.slice(1))
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' })
+    } else if (key !== 'default') {
+      // Link a "Inicio" (sin hash); en la carga inicial se respeta el scroll del navegador
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [hash, key])
+
   return (
     <>
       <Helmet>
@@ -22,7 +38,7 @@ export default function Inicio() {
         />
         <meta name="keywords" content="traslados, Buenos Aires, aeropuerto, Capital Federal, Costa Atlántica, remis, taxi, viajes" />
         <meta name="author" content="Maxi Viajes" />
-        <link rel="canonical" href="https://maxiviajes.com.ar/" />
+        <link rel="canonical" href={`${SITE.url}/`} />
 
         {/* Open Graph */}
         <meta property="og:type" content="website" />

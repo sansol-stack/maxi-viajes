@@ -9,6 +9,7 @@ import ctaBg from '../assets/cta-bg.webp'
 export default function CTA() {
   return (
     <section
+      id="contacto"
       className="relative py-24 md:py-36 overflow-hidden"
       aria-label="Contacto y consulta"
     >
