@@ -48,19 +48,23 @@ const WAIT_OPTIONS = [
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-/** Genera el mensaje de WhatsApp con todos los datos del formulario */
+/**
+ * Genera el mensaje de WhatsApp con todos los datos del formulario.
+ * Texto plano a propósito: WhatsApp Desktop (Windows) desfasa las marcas de
+ * formato (*negrita*, listas con "- ", emojis) y termina reemplazando letras por "*".
+ */
 function buildWhatsAppMessage(data, initialMsg) {
   const lines = [
     `Hola Maxi! Te escribo desde la web para consultar disponibilidad.`,
     ``,
-    `- *Nombre:* ${data.name}`,
-    `- *Fecha del viaje:* ${data.date}`,
-    `- *Horario de búsqueda:* ${data.time} hs`,
-    `- *Desde:* ${data.from}`,
-    `- *Hasta:* ${data.to}`,
-    `- *Pasajeros:* ${data.passengers}`,
-    `- *¿Necesita espera?* ${data.wait}`,
-    `- *Equipaje:* ${data.luggage}`,
+    `Nombre: ${data.name}`,
+    `Fecha del viaje: ${data.date}`,
+    `Horario de búsqueda: ${data.time} hs`,
+    `Desde: ${data.from}`,
+    `Hasta: ${data.to}`,
+    `Pasajeros: ${data.passengers}`,
+    `¿Necesita espera?: ${data.wait}`,
+    `Equipaje: ${data.luggage}`,
   ]
 
   if (initialMsg) {
@@ -69,7 +73,7 @@ function buildWhatsAppMessage(data, initialMsg) {
       .replace(/^Hola\s+Maxi,?\s*/i, '') // Quitamos el saludo repetido si existe
       .trim()
     if (cleanedMsg) {
-      lines.push(``, `💬 *Interés:* ${cleanedMsg}`)
+      lines.push(``, `Interés: ${cleanedMsg}`)
     }
   }
 
@@ -457,7 +461,7 @@ function QuoteModalContent({ onClose, initialMsg }) {
                     <div className="flex items-center justify-between gap-4 border-t border-white/5 pt-4">
                       <div className="flex flex-col">
                         <span className="font-body text-sm text-white/70 leading-none mb-1">Carry-on <span className="text-white/40 text-xs font-body font-normal">(0-10kg)</span></span>
-                        <span className="text-white/30 text-[10px] uppercase tracking-wider font-semibold">Equipaje de bodega</span>
+                        <span className="text-white/30 text-[10px] uppercase tracking-wider font-semibold">Equipaje de mano</span>
                       </div>
                       <div className="w-24">
                         <CustomSelect
